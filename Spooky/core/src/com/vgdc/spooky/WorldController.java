@@ -141,6 +141,9 @@ public class WorldController {
 				cameraHelper.setTarget(level.player);
 			else
 				cameraHelper.setTarget(null);
+		// Switch to the High Score screen.
+		if (Gdx.input.isKeyJustPressed(Keys.Y))
+			/*something*/;
 
 		// Test a mock encounter.
 	}

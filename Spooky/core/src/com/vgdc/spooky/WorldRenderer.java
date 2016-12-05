@@ -4,8 +4,6 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.ParticleEffect;
-import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
-import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Disposable;
 import com.vgdc.utils.Constants;
 
@@ -13,10 +11,8 @@ import com.vgdc.utils.Constants;
  * Draws our world
  * @author Evan S.
  * also
- * @author Lis O.
- * to make box2d work
  */
-public class WorldRenderer extends Box2DDebugRenderer implements Disposable {
+public class WorldRenderer implements Disposable {
 
 	private OrthographicCamera camera;
 	private OrthographicCamera cameraGUI;
@@ -43,9 +39,7 @@ public class WorldRenderer extends Box2DDebugRenderer implements Disposable {
 
 	}
 
-	public void render(World world) {
-		if (!Constants.DEBUGGING_MAP)
-			super.render(world, camera.combined);
+	public void render() {
 		renderWorld(batch);
 		renderGui(batch);
 	}

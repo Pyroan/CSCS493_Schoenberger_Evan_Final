@@ -49,33 +49,8 @@ public class Spooky extends ApplicationAdapter {
 	// the player and the music and everything.
 	WorldController worldController;
 
-	//box2d stuffs
-	public static World b2dWorld;
-	Body player;
-	Box2DDebugRenderer b2dr;
-	Body test;
-
-	//box2d light stuff
-	RayHandler rayHandler;
-	public static PointLight light;
-
 	@Override
 	public void create () {
-		//trying to make box2D work
-
-		//init box2d world, setting gravity vector (0 gravity for now)
-		b2dWorld = new World(new Vector2(0, 0f), false);
-		//wold handler
-		//worldRenderer extends b2dr
-
-		//light stuff
-		if (Constants.ENABLE_LIGHTS){
-		rayHandler = new RayHandler(b2dWorld);
-		rayHandler.setAmbientLight(.2f);
-		light = new PointLight(rayHandler, 100, Color.BLACK, 1, 0, 0 );
-		}
-		//light.setSoftnessLength(0f); //if we don't want bleed
-
 		// Initialize all the non-box2d stuff.
 		Assets.instance.init(new AssetManager());
 		Fonts.instance.init();
@@ -95,8 +70,7 @@ public class Spooky extends ApplicationAdapter {
 		Gdx.gl.glClearColor(1, 1, 1, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		worldController.update(Gdx.graphics.getDeltaTime());
-		worldRenderer.render(b2dWorld);
-		if (rayHandler != null) rayHandler.render();
+		worldRenderer.render();
 		batch.begin();
 		batch.end();
 	}
@@ -104,8 +78,6 @@ public class Spooky extends ApplicationAdapter {
 	//for box2d
 	public void update(float delta){
 		//world logic before render
-		b2dWorld.step(1/60f, 6, 2);
-		if (rayHandler != null) rayHandler.update();
 	}
 
 	/**
@@ -123,8 +95,6 @@ public class Spooky extends ApplicationAdapter {
 	public void dispose() {
 		worldRenderer.dispose();
 		Assets.instance.dispose();
-		b2dWorld.dispose();
-		if (rayHandler != null) rayHandler.dispose();
 
 	}
 

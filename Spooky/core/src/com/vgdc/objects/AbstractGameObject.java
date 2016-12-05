@@ -98,30 +98,30 @@ public abstract class AbstractGameObject {
 
 	//Lis made this for box2d
 	//collision bounds
-	public Body createBox(float x, float y, float width, float height, boolean isStatic){
-		Body pBody;
-
-		//physical properties of the body
-		BodyDef def = new BodyDef();
-		if(isStatic)
-			def.type = BodyType.StaticBody;
-		else
-			def.type = BodyType.DynamicBody;
-
-		def.position.set(x, y);
-		def.fixedRotation = true;
-		//places in the world
-		pBody = Spooky.b2dWorld.createBody(def);
-
-		PolygonShape shape = new PolygonShape();
-		//hit box i guess
-		shape.setAsBox (width, height);
-
-		pBody.createFixture(shape, 1.0f);
-		shape.dispose();
-
-		return pBody;
-	}
+//	public Body createBox(float x, float y, float width, float height, boolean isStatic){
+//		Body pBody;
+//
+//		//physical properties of the body
+//		BodyDef def = new BodyDef();
+//		if(isStatic)
+//			def.type = BodyType.StaticBody;
+//		else
+//			def.type = BodyType.DynamicBody;
+//
+//		def.position.set(x, y);
+//		def.fixedRotation = true;
+//		//places in the world
+//		pBody = Spooky.b2dWorld.createBody(def);
+//
+//		PolygonShape shape = new PolygonShape();
+//		//hit box i guess
+//		shape.setAsBox (width, height);
+//
+//		pBody.createFixture(shape, 1.0f);
+//		shape.dispose();
+//
+//		return pBody;
+//	}
 
 	public abstract float getWidth();
 	public abstract float getHeight();

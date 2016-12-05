@@ -20,6 +20,7 @@ public class Fonts {
 	public static final Fonts instance = new Fonts();
 
 	public BitmapFont gamer;
+	public BitmapFont gamer_big;
 
 	FreeTypeFontGenerator generator;
 
@@ -35,6 +36,8 @@ public class Fonts {
 		param.borderColor = Color.BLACK;
 		param.borderWidth = 2;
 		gamer = generator.generateFont(param);
+		param.size = 48;
+		gamer_big = generator.generateFont(param);
 	}
 
 }
