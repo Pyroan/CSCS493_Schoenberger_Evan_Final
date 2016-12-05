@@ -6,15 +6,23 @@ import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.Body;
+import com.badlogic.gdx.physics.box2d.BodyDef;
+import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.Box2D;
+import com.badlogic.gdx.physics.box2d.FixtureDef;
+import com.badlogic.gdx.physics.box2d.PolygonShape;
+import com.badlogic.gdx.physics.box2d.World;
 import com.vgdc.audio.MusicPlayer;
-import com.vgdc.encounters.EncounterHandler;
 import com.vgdc.objects.AbstractGameObject;
 import com.vgdc.objects.Bush;
 import com.vgdc.objects.Candy;
+import com.vgdc.objects.Floor;
 import com.vgdc.objects.Player;
 import com.vgdc.objects.Rock;
 import com.vgdc.objects.Tree;
+import com.vgdc.screens.ScoreScreen;
 import com.vgdc.ui.UIController;
 import com.vgdc.utils.CameraHelper;
 import com.vgdc.utils.Constants;
@@ -43,8 +51,7 @@ public class WorldController {
 
 	public UIController uiController;
 
-	// Should maybe be handled by UI controller?
-	public EncounterHandler encounterHandler;
+	public World b2World;
 
 	public int numberOfCandies;
 	public int collectedCandies;
@@ -64,13 +71,13 @@ public class WorldController {
 
 	private void init() {
 		cameraHelper = new CameraHelper();
-		encounterHandler = new EncounterHandler();
 		controller = new PlayerControls();
 		musicPlayer = new MusicPlayer();
 		uiController = new UIController();
 		snow.load(Gdx.files.internal("particles/Snow"), Gdx.files.internal("particles"));
 		collectedCandies = 0;
 		initLevel();
+		initPhysics();
 	}
 
 	/**
@@ -78,12 +85,12 @@ public class WorldController {
 	 */
 	private void initLevel() {
 		long seed = 123456789; // Seed can be up to 9 digits long (for now).
-//		MapGenerator mg = new MapGenerator(Constants.MAP_WIDTH, Constants.MAP_HEIGHT, seed);
+		//		MapGenerator mg = new MapGenerator(Constants.MAP_WIDTH, Constants.MAP_HEIGHT, seed);
 		AlternativeMapGen mg = new AlternativeMapGen(Constants.MAP_WIDTH, Constants.MAP_HEIGHT, seed);
 		// We're actually not gonna use Procedural generation for now but I'll leave the code for later.
 		// That's disgusting how Dare I do that.
 		level = new Level(Constants.LEVEL_NAME);
-//		level = new Level(mg.getPixmap());
+		//		level = new Level(mg.getPixmap());
 		mg.dispose();
 		if (!Constants.DEBUGGING_MAP) cameraHelper.setTarget(level.player);
 		numberOfCandies = level.getNumberOfCandies();
@@ -91,14 +98,6 @@ public class WorldController {
 
 	public void update(float deltaTime)
 	{
-		if (collectedCandies == numberOfCandies) {
-			// As a nod to spectrum shooter, have it
-			// crash the game upon victory.
-			Gdx.app.log("", "THAS PRETTY NEAT.");
-			System.exit(0);
-			return;
-		}
-		encounterHandler.update(deltaTime);
 		// Input Handling
 		handleDebugInput(deltaTime);
 		handleCameraMovement(deltaTime);
@@ -106,6 +105,7 @@ public class WorldController {
 		// Update UI/Level Objects
 		uiController.update(deltaTime);
 		level.update(deltaTime);
+		b2World.step(deltaTime, 8, 3);
 		//Test for collision
 		if (Constants.ENABLE_COLLISION) testForCollision();
 		// Move Camera
@@ -143,8 +143,7 @@ public class WorldController {
 				cameraHelper.setTarget(null);
 		// Switch to the High Score screen.
 		if (Gdx.input.isKeyJustPressed(Keys.Y))
-			/*something*/;
-
+			game.setScreen(new ScoreScreen(game));
 		// Test a mock encounter.
 	}
 
@@ -198,6 +197,52 @@ public class WorldController {
 			level.player.velocity.x = level.player.terminalVelocity.x;
 			level.player.setTexture(level.player.right);
 		}
+	}
+
+	private void initPhysics()
+	{
+		if (b2World != null) b2World.dispose();
+		b2World = new World(new Vector2(0, -9.81f), true);
+		// Rocks?
+		Vector2 origin = new Vector2();
+		for (Floor floor: level.tiles)
+		{
+			BodyDef bodyDef = new BodyDef();
+			bodyDef.type = BodyType.KinematicBody;
+			bodyDef.position.set(floor.position);
+			Body body = b2World.createBody(bodyDef);
+			floor.body = body;
+			PolygonShape polygonShape = new PolygonShape();
+			origin.x = floor.bounds.width / 2.0f;
+			origin.y = floor.bounds.height / 2.0f;
+			polygonShape.setAsBox(floor.bounds.width /2.0f,
+					floor.bounds.height / 2.0f, origin, 0);
+			FixtureDef fixtureDef = new FixtureDef();
+			fixtureDef.shape = polygonShape;
+			body.createFixture(fixtureDef);
+			polygonShape.dispose();
+		}
+		// Player
+		origin = new Vector2();
+		BodyDef bodyDef = new BodyDef();
+		bodyDef.type = BodyType.DynamicBody;
+		bodyDef.position.set(level.player.position);
+		Body body = b2World.createBody(bodyDef);
+		level.player.body = body;
+		PolygonShape polygonShape = new PolygonShape();
+		origin.x = level.player.bounds.width / 2.0f;
+		origin.y = level.player.bounds.height / 2.0f;
+		polygonShape.setAsBox(level.player.bounds.width / 2.0f,
+				level.player.bounds.height / 2.0f, origin, 0);
+		FixtureDef fixtureDef = new FixtureDef();
+		fixtureDef.shape = polygonShape;
+		body.createFixture(fixtureDef);
+		polygonShape.dispose();
+	}
+	
+	public void dispose()
+	{
+		if (b2World != null) b2World.dispose();
 	}
 
 

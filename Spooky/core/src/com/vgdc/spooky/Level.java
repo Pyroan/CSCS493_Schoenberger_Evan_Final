@@ -133,13 +133,6 @@ public class Level implements Disposable {
 				 * is a match.
 				 */
 
-				// Floor
-				// TODO: Move this so it autogens the floor.
-					// draw floor.
-					obj = new Floor();
-					obj.position.set(pixelX, baseHeight);
-					tiles.add((Floor)obj);
-
 				// Tree
 				if (TILE.TREE.sameColor(currentPixel)) {
 					obj = new Tree();
@@ -195,7 +188,9 @@ public class Level implements Disposable {
 				}
 
 				else if (TILE.GROUND.sameColor(currentPixel)) {
-					// Do nothing. We drew the ground already.
+					obj = new Floor();
+					obj.position.set(pixelX, baseHeight);
+					tiles.add((Floor)obj);
 				}
 
 				// Unknown pixel color.

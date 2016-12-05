@@ -41,5 +41,5 @@ public final class Constants {
 	public static final int NUMBER_OF_CANDIES = 30;
 
 	// Name of our real level.
-	public static final String LEVEL_NAME = "AKHC-level01.png";
+	public static final String LEVEL_NAME = "level-01.png";
 }

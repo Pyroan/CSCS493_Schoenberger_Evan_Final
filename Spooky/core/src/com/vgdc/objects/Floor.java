@@ -35,4 +35,9 @@ public class Floor extends AbstractGameObject{
 		return reg.getRegionHeight();
 	}
 
+	@Override
+	public void update(float deltaTime)
+	{
+		super.update(deltaTime);
+	}
 }

@@ -1,11 +1,13 @@
 package com.vgdc.screens;
 
-import java.util.ArrayList;
 import java.util.Scanner;
 
+import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.utils.Align;
 import com.vgdc.ui.Fonts;
 import com.vgdc.utils.Constants;
 
@@ -14,18 +16,22 @@ import com.vgdc.utils.Constants;
  * @author Evan S.
  *
  */
-public class ScoreScreen {
+public class ScoreScreen extends AbstractGameScreen {
 
 	private Entry[] scores;
 	private String title;
+	
+	private SpriteBatch batch;
 
 	/**
 	 * Constructor. Initializes an ArrayList.
 	 */
-	public ScoreScreen()
+	public ScoreScreen(Game game)
 	{
-		title = "High Scores";
+		super(game);
+		title = "HIGH SCORES";
 		scores = new Entry[10];
+		batch = new SpriteBatch();
 		loadScores();
 	}
 
@@ -42,15 +48,23 @@ public class ScoreScreen {
 	 */
 	public void render(SpriteBatch batch)
 	{
+		handleInput();
+		batch.begin();
 		// First, THE TITLE.
-		Fonts.instance.gamer_big.draw(batch, title, Constants.VIEWPORT_WIDTH/2, 10);
+		Fonts.instance.gamer_big.draw(batch, title, 
+				Constants.VIEWPORT_GUI_WIDTH/2, Constants.VIEWPORT_GUI_HEIGHT - 50,
+				0, Align.center, false);
 		// Next, THE SCORES
 		for (int i = 0; i < scores.length; i++)
 		{
-			String entry = scores[i].name + "/t" + scores[i].score;
+			String entry = "";
+			entry += i + 1 + ". " + "TEST"; 
+			//		scores[i].name + "/t" + scores[i].score;
 			// who doesn't like magic numbers?
-			Fonts.instance.gamer.draw(batch, entry, Constants.VIEWPORT_WIDTH/2, 50 + (30 * i));
+			Fonts.instance.gamer.draw(batch, entry, Constants.VIEWPORT_GUI_WIDTH/2 - 300, 
+					Constants.VIEWPORT_GUI_HEIGHT - 150 - (30 * i), 0, Align.left, false);
 		}
+		batch.end();
 	}
 
 	/**
@@ -101,5 +115,33 @@ public class ScoreScreen {
 			this.name = name;
 			this.score = score;
 		}
+	}
+
+	@Override
+	public void render(float deltaTime) {
+		render(batch);
+		
+	}
+
+	@Override
+	public void resize(int width, int height) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void show() {
+		Gdx.input.setCatchBackKey(true);
+	}
+
+	@Override
+	public void hide() {
+		Gdx.input.setCatchBackKey(false);
+	}
+	
+	public void handleInput() 
+	{
+		if (Gdx.input.isKeyJustPressed(Keys.Y))
+			game.setScreen(new GameScreen(game));
 	}
 }

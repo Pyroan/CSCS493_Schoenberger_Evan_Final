@@ -32,6 +32,8 @@ public abstract class AbstractGameObject {
 	public Vector2 acceleration;
 	public Rectangle bounds;
 
+	public Body body;
+
 	public AbstractGameObject() {
 		position = new Vector2();
 		dimension = new Vector2(1,1);
@@ -87,41 +89,46 @@ public abstract class AbstractGameObject {
 	 * @param deltaTime
 	 */
 	public void update (float deltaTime) {
-		updateMotionX(deltaTime);
-		updateMotionY(deltaTime);
-		// Move to new position
-		position.x += velocity.x * deltaTime;
-		position.y += velocity.y * deltaTime;
+		if (body == null) 
+		{
+			updateMotionX(deltaTime);
+			updateMotionY(deltaTime);
+			// Move to new position
+			position.x += velocity.x * deltaTime;
+			position.y += velocity.y * deltaTime;
+		}
+		position.set(body.getPosition());
+		rotation = body.getAngle() * MathUtils.radiansToDegrees;
 	}
 
 	public abstract void render (SpriteBatch batch);
 
 	//Lis made this for box2d
 	//collision bounds
-//	public Body createBox(float x, float y, float width, float height, boolean isStatic){
-//		Body pBody;
-//
-//		//physical properties of the body
-//		BodyDef def = new BodyDef();
-//		if(isStatic)
-//			def.type = BodyType.StaticBody;
-//		else
-//			def.type = BodyType.DynamicBody;
-//
-//		def.position.set(x, y);
-//		def.fixedRotation = true;
-//		//places in the world
-//		pBody = Spooky.b2dWorld.createBody(def);
-//
-//		PolygonShape shape = new PolygonShape();
-//		//hit box i guess
-//		shape.setAsBox (width, height);
-//
-//		pBody.createFixture(shape, 1.0f);
-//		shape.dispose();
-//
-//		return pBody;
-//	}
+	//	public Body createBox(float x, float y, float width, float height, boolean isStatic){
+	//		Body pBody;
+	//
+	//		//physical properties of the body
+	//		BodyDef def = new BodyDef();
+	//		if(isStatic)
+	//			def.type = BodyType.StaticBody;
+	//		else
+	//			def.type = BodyType.DynamicBody;
+	//
+	//		def.position.set(x, y);
+	//		def.fixedRotation = true;
+	//		//places in the world
+	//		pBody = Spooky.b2dWorld.createBody(def);
+	//
+	//		PolygonShape shape = new PolygonShape();
+	//		//hit box i guess
+	//		shape.setAsBox (width, height);
+	//
+	//		pBody.createFixture(shape, 1.0f);
+	//		shape.dispose();
+	//
+	//		return pBody;
+	//	}
 
 	public abstract float getWidth();
 	public abstract float getHeight();
