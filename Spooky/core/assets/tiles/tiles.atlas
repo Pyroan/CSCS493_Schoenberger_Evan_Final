@@ -1,0 +1,90 @@
+
+tiles.png
+size: 512,512
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+Big Tree
+  rotate: false
+  xy: 260, 290
+  size: 128, 192
+  orig: 128, 192
+  offset: 0, 0
+  index: -1
+abe
+  rotate: false
+  xy: 390, 354
+  size: 64, 128
+  orig: 64, 128
+  offset: 0, 0
+  index: -1
+abe-back
+  rotate: false
+  xy: 132, 58
+  size: 64, 128
+  orig: 64, 128
+  offset: 0, 0
+  index: -1
+abe-left
+  rotate: false
+  xy: 234, 160
+  size: 64, 128
+  orig: 64, 128
+  offset: 0, 0
+  index: -1
+abe-right
+  rotate: false
+  xy: 300, 160
+  size: 64, 128
+  orig: 64, 128
+  offset: 0, 0
+  index: -1
+bush
+  rotate: false
+  xy: 2, 2
+  size: 28, 28
+  orig: 28, 28
+  offset: 0, 0
+  index: -1
+candy
+  rotate: false
+  xy: 390, 288
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
+horizontal-house
+  rotate: false
+  xy: 2, 290
+  size: 256, 192
+  orig: 256, 192
+  offset: 0, 0
+  index: -1
+rock1
+  rotate: false
+  xy: 132, 188
+  size: 100, 100
+  orig: 100, 100
+  offset: 0, 0
+  index: -1
+snow - Copy
+  rotate: false
+  xy: 366, 222
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
+tree1
+  rotate: false
+  xy: 456, 451
+  size: 25, 31
+  orig: 25, 31
+  offset: 0, 0
+  index: -1
+vertical-house
+  rotate: false
+  xy: 2, 32
+  size: 128, 256
+  orig: 128, 256
+  offset: 0, 0
+  index: -1
