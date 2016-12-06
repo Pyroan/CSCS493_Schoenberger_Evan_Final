@@ -182,21 +182,25 @@ public class WorldController {
 	{
 		if (!cameraHelper.hasTarget(level.player)) return;
 
+		Vector2 moveVector = b2World.getGravity();
+
 		if (Gdx.input.isKeyPressed(Keys.W)) {
-			level.player.body.linVelLoc.y = level.player.terminalVelocity.y;
+			moveVector.y = level.player.terminalVelocity.y;
 			level.player.setTexture(level.player.back);
 		} else if (Gdx.input.isKeyPressed(Keys.S)) {
-			level.player.velocity.y = -level.player.terminalVelocity.y;
+			moveVector.y = -level.player.terminalVelocity.y;
 			level.player.setTexture(level.player.front);
 		}
 
 		if (Gdx.input.isKeyPressed(Keys.A)) {
-			level.player.body.linVelLoc.x = -level.player.terminalVelocity.x;
+			moveVector.x = -level.player.terminalVelocity.x;
 			level.player.setTexture(level.player.left);
 		}else if (Gdx.input.isKeyPressed(Keys.D)) {
-			level.player.body.linVelLoc.x = level.player.terminalVelocity.x;
+			moveVector.x = level.player.terminalVelocity.x;
 			level.player.setTexture(level.player.right);
 		}
+
+		level.player.body.applyLinearImpulse(moveVector, level.player.position, true);
 	}
 
 	private void initPhysics()
@@ -208,7 +212,7 @@ public class WorldController {
 		for (Floor floor: level.tiles)
 		{
 			BodyDef bodyDef = new BodyDef();
-			bodyDef.type = BodyType.DynamicBody;
+			bodyDef.type = BodyType.StaticBody;
 			bodyDef.position.set(floor.position);
 			Body body = b2World.createBody(bodyDef);
 			floor.body = body;
@@ -240,7 +244,7 @@ public class WorldController {
 		body.createFixture(fixtureDef);
 		polygonShape.dispose();
 	}
-	
+
 	public void dispose()
 	{
 		if (b2World != null) b2World.dispose();
