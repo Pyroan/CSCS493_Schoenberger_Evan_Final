@@ -183,7 +183,7 @@ public class WorldController {
 		if (!cameraHelper.hasTarget(level.player)) return;
 
 		if (Gdx.input.isKeyPressed(Keys.W)) {
-			level.player.velocity.y = level.player.terminalVelocity.y;
+			level.player.body.linVelLoc.y = level.player.terminalVelocity.y;
 			level.player.setTexture(level.player.back);
 		} else if (Gdx.input.isKeyPressed(Keys.S)) {
 			level.player.velocity.y = -level.player.terminalVelocity.y;
@@ -191,10 +191,10 @@ public class WorldController {
 		}
 
 		if (Gdx.input.isKeyPressed(Keys.A)) {
-			level.player.velocity.x = -level.player.terminalVelocity.x;
+			level.player.body.linVelLoc.x = -level.player.terminalVelocity.x;
 			level.player.setTexture(level.player.left);
 		}else if (Gdx.input.isKeyPressed(Keys.D)) {
-			level.player.velocity.x = level.player.terminalVelocity.x;
+			level.player.body.linVelLoc.x = level.player.terminalVelocity.x;
 			level.player.setTexture(level.player.right);
 		}
 	}
@@ -208,7 +208,7 @@ public class WorldController {
 		for (Floor floor: level.tiles)
 		{
 			BodyDef bodyDef = new BodyDef();
-			bodyDef.type = BodyType.KinematicBody;
+			bodyDef.type = BodyType.DynamicBody;
 			bodyDef.position.set(floor.position);
 			Body body = b2World.createBody(bodyDef);
 			floor.body = body;
@@ -227,6 +227,7 @@ public class WorldController {
 		BodyDef bodyDef = new BodyDef();
 		bodyDef.type = BodyType.DynamicBody;
 		bodyDef.position.set(level.player.position);
+		bodyDef.fixedRotation = true;
 		Body body = b2World.createBody(bodyDef);
 		level.player.body = body;
 		PolygonShape polygonShape = new PolygonShape();
