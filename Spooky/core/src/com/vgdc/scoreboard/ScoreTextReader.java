@@ -1,4 +1,4 @@
-package com.vgdc.utils;
+package com.vgdc.scoreboard;
 
 import java.util.ArrayList;
 import java.util.Scanner;

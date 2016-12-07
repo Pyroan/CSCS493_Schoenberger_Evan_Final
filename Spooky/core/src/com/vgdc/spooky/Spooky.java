@@ -33,7 +33,7 @@ public class Spooky extends Game {
 
 		setScreen(new GameScreen(this));
 	}
-	
+
 	public void initializeThings()
 	{
 		controller = new PlayerControls();

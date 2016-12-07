@@ -7,29 +7,28 @@ import com.badlogic.gdx.graphics.GL20;
 import com.vgdc.spooky.PlayerControls;
 import com.vgdc.spooky.WorldController;
 import com.vgdc.spooky.WorldRenderer;
-public class GameScreen extends AbstractGameScreen 
+public class GameScreen extends AbstractGameScreen
 {
 	private static final String TAG = GameScreen.class.getName();
-	
+
 	// PlayerController (in progress)
 	PlayerControls controller;
-	
+
 	// Updates the world, including the level and
 	// player and music and whatnot.
 	private WorldController worldController;
-	
+
 	// Draws the whole world.
 	private WorldRenderer worldRenderer;
-	
+
 	public GameScreen (Game game)
 	{
 		super(game);
 	}
-	
+
 	@Override
 	public void render(float deltaTime)
 	{
-
 		// Update game world by the time that has passed
 		// since last rendered frame.
 		worldController.update(deltaTime);
@@ -42,27 +41,24 @@ public class GameScreen extends AbstractGameScreen
 		worldRenderer.render();
 	}
 
-	
+
 	@Override
 	public void resize(int width, int height)
 	{
 		worldRenderer.resize(width, height);
 	}
-	
+
 	@Override
 	public void show ()
 	{
 		worldController = new WorldController(game);
 		worldRenderer = new WorldRenderer(worldController);
-		Gdx.input.setCatchBackKey(true);
 	}
-	
+
 	@Override
 	public void hide()
 	{
 		worldController.dispose();
 		worldRenderer.dispose();
-		Gdx.input.setCatchBackKey(false);
 	}
-	
 }

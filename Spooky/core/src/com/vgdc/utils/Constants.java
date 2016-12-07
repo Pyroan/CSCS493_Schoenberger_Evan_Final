@@ -18,7 +18,7 @@ public final class Constants {
 
 	// Enable/Disable Debug Tools
 	public static final boolean DEBUGGING_MAP = false;
-	public static final boolean ENABLE_COLLISION = false;
+	public static final boolean ENABLE_COLLISION = true;
 	public static final boolean ENABLE_LIGHTS = false;
 
 	// Our default map size (in tiles)
