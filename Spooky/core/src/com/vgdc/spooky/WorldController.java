@@ -120,6 +120,7 @@ public class WorldController {
 					floor.dimension.y / 2.0f, origin, 0);
 			FixtureDef fixtureDef = new FixtureDef();
 			fixtureDef.shape = polygonShape;
+			fixtureDef.friction = .9f;
 			body.createFixture(fixtureDef);
 			polygonShape.dispose();
 		}
@@ -128,18 +129,38 @@ public class WorldController {
 		BodyDef bodyDef = new BodyDef();
 		bodyDef.type = BodyType.DynamicBody;
 		bodyDef.position.set(level.player.position);
-		bodyDef.fixedRotation = true;
+		bodyDef.fixedRotation = false;
 		Body body = b2world.createBody(bodyDef);
 		level.player.body = body;
 		PolygonShape polygonShape = new PolygonShape();
 		origin.x = level.player.dimension.x / 2.0f;
-		origin.y = level.player.dimension.y / 2.0f;
+		origin.y = level.player.dimension.y / 2.0f - .05f;
 		polygonShape.setAsBox(level.player.dimension.x / 2.0f,
-				level.player.dimension.y / 2.0f, origin, 0);
+				level.player.dimension.y / 2.0f - .05f, origin, 0);
 		FixtureDef fixtureDef = new FixtureDef();
 		fixtureDef.shape = polygonShape;
 		body.createFixture(fixtureDef);
 		polygonShape.dispose();
+		// Candies
+		origin = new Vector2();
+		for (Candy candy: level.candies)
+		{
+			bodyDef = new BodyDef();
+			bodyDef.type = BodyType.KinematicBody;
+			bodyDef.position.set(candy.position);
+			bodyDef.fixedRotation = false;
+			body = b2world.createBody(bodyDef);
+			candy.body = body;
+			polygonShape = new PolygonShape();
+			origin.x = candy.dimension.x /2.0f;
+			origin.y = candy.dimension.y / 2.0f;
+			polygonShape.setAsBox(candy.dimension.x / 4.0f,
+					candy.dimension.y / 4.0f, origin, 0);
+			fixtureDef = new FixtureDef();
+			fixtureDef.shape = polygonShape;
+			body.createFixture(fixtureDef);
+			polygonShape.dispose();
+		}
 	}
 
 	public void update(float deltaTime)
@@ -232,7 +253,6 @@ public class WorldController {
 		Vector2 moveVector = new Vector2();
 
 		if (Gdx.input.isKeyPressed(Keys.W)) {
-
 			moveVector.y = level.player.terminalVelocity.y;
 			level.player.setTexture(level.player.back);
 		} else if (Gdx.input.isKeyPressed(Keys.S)) {
@@ -249,6 +269,19 @@ public class WorldController {
 		}
 
 		level.player.body.applyLinearImpulse(moveVector, level.player.position, true);
+		
+//		// Rotate the player?
+//		if (Gdx.input.isKeyJustPressed(Keys.Q))
+//		{
+//			float rotation = level.player.body.getAngle() / 90;
+//			if (level.player.body.getAngle() > rotation - 90)
+//			{
+//				level.player.body.setAngularVelocity(20);
+//			} else
+//			{
+//				level.player.body.setAngularVelocity(0);
+//			}
+//		}
 	}
 
 

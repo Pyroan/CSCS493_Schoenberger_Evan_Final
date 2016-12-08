@@ -98,7 +98,7 @@ public abstract class AbstractGameObject {
 			position.y += velocity.y * deltaTime;
 		}
 		position.set(body.getPosition());
-		rotation = body.getAngle() * MathUtils.radiansToDegrees;
+//		rotation = body.getAngle() * MathUtils.radiansToDegrees;
 	}
 
 	public abstract void render (SpriteBatch batch);

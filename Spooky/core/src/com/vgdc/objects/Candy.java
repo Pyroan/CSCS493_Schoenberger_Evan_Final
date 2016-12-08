@@ -47,5 +47,13 @@ public class Candy extends AbstractGameObject
 	public float getHeight() {
 		return reg.getRegionHeight();
 	}
+	
+	@Override
+	public void update(float deltaTime) {
+		super.update(deltaTime);
+//		body.setAngularVelocity(-360 * deltaTime);
+		rotation += -360 * deltaTime;
+		rotation %= 360;
+	}
 
 }
