@@ -135,7 +135,7 @@ public class WorldController {
 		PolygonShape polygonShape = new PolygonShape();
 		origin.x = level.player.dimension.x / 2.0f;
 		origin.y = level.player.dimension.y / 2.0f - .05f;
-		polygonShape.setAsBox(level.player.dimension.x / 2.0f,
+		polygonShape.setAsBox(level.player.dimension.x / 2.0f - .1f,
 				level.player.dimension.y / 2.0f - .05f, origin, 0);
 		FixtureDef fixtureDef = new FixtureDef();
 		fixtureDef.shape = polygonShape;
@@ -287,5 +287,6 @@ public class WorldController {
 
 	public void dispose()
 	{
+		
 	}
 }
