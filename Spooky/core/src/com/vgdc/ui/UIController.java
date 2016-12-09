@@ -35,6 +35,7 @@ public class UIController {
 	public void update(float deltaTime)
 	{
 		timer.update(deltaTime);
+		counter.update(deltaTime);
 //		minimap.update(deltaTime);
 	}
 

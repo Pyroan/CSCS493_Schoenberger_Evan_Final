@@ -1,6 +1,7 @@
 package com.vgdc.ui;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.vgdc.spooky.WorldController;
 
 /**
  * UI element for displaying the number of candies collected
@@ -24,5 +25,9 @@ public class Counter {
 	{
 		String s = count + "/" + total;
 		Fonts.instance.gamer.draw(batch, s, x, y);
+	}
+	void update(float deltaTime)
+	{
+		count = WorldController.collectedCandies;
 	}
 }

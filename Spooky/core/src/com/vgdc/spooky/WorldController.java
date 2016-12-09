@@ -3,26 +3,17 @@ package com.vgdc.spooky;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
-import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.g2d.ParticleEffect;
-import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
-import com.badlogic.gdx.physics.box2d.Box2D;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.vgdc.audio.MusicPlayer;
-import com.vgdc.objects.AbstractGameObject;
-import com.vgdc.objects.Bush;
 import com.vgdc.objects.Candy;
 import com.vgdc.objects.Floor;
-import com.vgdc.objects.Player;
-import com.vgdc.objects.Rock;
-import com.vgdc.objects.Tree;
-import com.vgdc.screens.GameScreen;
 import com.vgdc.screens.ScoreScreen;
 import com.vgdc.ui.UIController;
 import com.vgdc.utils.CameraHelper;
@@ -53,9 +44,11 @@ public class WorldController {
 	public UIController uiController;
 
 	public World b2world;
+	
+	public PhysicsHandler physicsHandler;
 
-	public int numberOfCandies;
-	public int collectedCandies;
+	public static int numberOfCandies;
+	public static int collectedCandies;
 
 	public ParticleEffect snow = new ParticleEffect();
 
@@ -75,10 +68,12 @@ public class WorldController {
 		controller = new PlayerControls();
 		musicPlayer = new MusicPlayer();
 		uiController = new UIController();
+		physicsHandler = new PhysicsHandler();
 		snow.load(Gdx.files.internal("particles/Snow"), Gdx.files.internal("particles"));
 		collectedCandies = 0;
 		initLevel();
 		initPhysics();
+		b2world.setContactListener(physicsHandler);
 	}
 
 	/**
@@ -140,6 +135,7 @@ public class WorldController {
 		FixtureDef fixtureDef = new FixtureDef();
 		fixtureDef.shape = polygonShape;
 		body.createFixture(fixtureDef);
+		body.setUserData(level.player);
 		polygonShape.dispose();
 		// Candies
 		origin = new Vector2();
@@ -159,6 +155,7 @@ public class WorldController {
 			fixtureDef = new FixtureDef();
 			fixtureDef.shape = polygonShape;
 			body.createFixture(fixtureDef);
+			body.setUserData(candy);
 			polygonShape.dispose();
 		}
 	}
@@ -172,15 +169,22 @@ public class WorldController {
 		// Update UI/Level Objects
 		uiController.update(deltaTime);
 		level.update(deltaTime);
-		//Test for collision
-		if (Constants.ENABLE_COLLISION)
-			b2world.step(1/60f, 8, 3);
+		b2world.step(1/60f, 8, 3);
 		// Move Camera
 		cameraHelper.update(deltaTime);
 		// Play Music
 		musicPlayer.update(deltaTime);
 		// Update Snow.
 		snow.update(deltaTime);
+		
+		collectedCandies = 0;
+		for (Candy candy : level.candies)
+		{
+			if (candy.collected)
+			{
+				collectedCandies++;
+			}
+		}
 	}
 
 

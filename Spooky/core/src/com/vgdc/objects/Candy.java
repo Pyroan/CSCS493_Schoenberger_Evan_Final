@@ -54,6 +54,10 @@ public class Candy extends AbstractGameObject
 //		body.setAngularVelocity(-360 * deltaTime);
 		rotation += -360 * deltaTime;
 		rotation %= 360;
+		if (collected)
+		{
+			body.setActive(false);
+		}
 	}
 
 }
