@@ -17,6 +17,8 @@ public class Candy extends AbstractGameObject
 	private TextureRegion reg;
 
 	public boolean collected;
+	// Was the candy collected in the previous frame?
+	public boolean justCollected;
 
 	Pixmap pixmap = new Pixmap(200, 200, Format.RGBA8888);
 	public Candy()
@@ -54,6 +56,15 @@ public class Candy extends AbstractGameObject
 //		body.setAngularVelocity(-360 * deltaTime);
 		rotation += -360 * deltaTime;
 		rotation %= 360;
+		if (collected)
+		{
+			body.setActive(false);
+		}
+	}
+	
+	public void makeCollected() {
+		collected = true;
+		justCollected = true;
 	}
 
 }

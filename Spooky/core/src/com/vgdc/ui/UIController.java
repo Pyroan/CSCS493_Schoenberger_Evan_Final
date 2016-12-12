@@ -35,6 +35,7 @@ public class UIController {
 	public void update(float deltaTime)
 	{
 		timer.update(deltaTime);
+		counter.update(deltaTime);
 //		minimap.update(deltaTime);
 	}
 
@@ -65,5 +66,10 @@ public class UIController {
 		String time = timer.getTime();
 		Fonts.instance.gamer.setColor(Color.WHITE);
 		Fonts.instance.gamer.draw(batch, time, x, y);
+	}
+	
+	public GameTimer getTimer()
+	{
+		return timer;
 	}
 }

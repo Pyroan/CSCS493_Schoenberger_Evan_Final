@@ -12,6 +12,7 @@ import com.vgdc.objects.Bush;
 import com.vgdc.objects.Candy;
 import com.vgdc.objects.Floor;
 import com.vgdc.objects.HorizontalHouse;
+import com.vgdc.objects.SpookyBackground;
 import com.vgdc.objects.VerticalHouse;
 import com.vgdc.objects.Player;
 import com.vgdc.objects.Rock;
@@ -101,6 +102,7 @@ public class Level implements Disposable {
 	public Array<HorizontalHouse> horizontalHouses;
 
 	public Player player;
+	public SpookyBackground spooky;
 
 	/**
 	 * Reads in a pixmap, filling our Arrays based on the colors
@@ -137,7 +139,7 @@ public class Level implements Disposable {
 				if (TILE.TREE.sameColor(currentPixel)) {
 					obj = new Tree();
 					obj.position.set(pixelX, baseHeight);
-//					obj.createBox(obj.position.x, obj.position.y, obj.getWidth(), obj.getHeight(), true);
+					//					obj.createBox(obj.position.x, obj.position.y, obj.getWidth(), obj.getHeight(), true);
 					trees.add((Tree)obj);
 
 				}
@@ -146,7 +148,7 @@ public class Level implements Disposable {
 				else if (TILE.BUSH.sameColor(currentPixel)) {
 					obj = new Bush();
 					obj.position.set(pixelX, baseHeight);
-//					obj.createBox(obj.position.x, obj.position.y, obj.getWidth(), obj.getHeight(), true);
+					//					obj.createBox(obj.position.x, obj.position.y, obj.getWidth(), obj.getHeight(), true);
 					bushes.add((Bush)obj);
 				}
 
@@ -154,7 +156,7 @@ public class Level implements Disposable {
 				else if (TILE.ROCK.sameColor(currentPixel)) {
 					obj = new Rock();
 					obj.position.set(pixelX, baseHeight);
-//					obj.createBox(obj.position.x, obj.position.y, obj.getWidth(), obj.getHeight(), true);
+					//					obj.createBox(obj.position.x, obj.position.y, obj.getWidth(), obj.getHeight(), true);
 					rocks.add((Rock)obj);
 				}
 
@@ -199,11 +201,14 @@ public class Level implements Disposable {
 					int g = 0xff & (currentPixel >>> 16); // green color channel
 					int b = 0xff & (currentPixel >>> 8);  // blue color channel
 					int a = 0xff & (currentPixel);
-//					Gdx.app.error(TAG, "Unknown object at x<" + pixelX + "> y<"
-//							+ pixelY + ">: r<" + r + "> g<" + g + "> b<" + b + "> a<" + a + ">");
+					//					Gdx.app.error(TAG, "Unknown object at x<" + pixelX + "> y<"
+					//							+ pixelY + ">: r<" + r + "> g<" + g + "> b<" + b + "> a<" + a + ">");
 				}
 			}
 		}
+
+		spooky = new SpookyBackground(pixmap.getWidth() * 2, pixmap.getHeight() * 2);
+		spooky.position.set(0, 0);
 
 		// Tell me something.
 		Gdx.app.log(TAG, candies.size + " Candies spawned.");
@@ -220,6 +225,14 @@ public class Level implements Disposable {
 			batch.draw(tex, 0, 0, Constants.MAP_WIDTH, Constants.MAP_HEIGHT);
 		} else{
 
+			spooky.render(batch);
+			if (Constants.LSD_MODE)
+			{
+				float r = (float)Math.random();
+				float g = (float)Math.random();
+				float b = (float)Math.random();
+				batch.setColor(r, g, b, 1);
+			}
 			// Draw Floor
 			for (Floor floor: tiles)
 				floor.render(batch);
@@ -247,6 +260,7 @@ public class Level implements Disposable {
 			// Draw horizontal houses
 			for (HorizontalHouse house: horizontalHouses)
 				house.render(batch);
+			batch.setColor(1, 1, 1, 1);
 		}
 	}
 
@@ -254,6 +268,7 @@ public class Level implements Disposable {
 	 * Updates all objects in the level.
 	 */
 	public void update (float deltaTime) {
+		spooky.update(deltaTime);
 		player.update(deltaTime);
 		// Floor
 		for (Floor floor: tiles)

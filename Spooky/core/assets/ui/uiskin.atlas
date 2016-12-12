@@ -1,0 +1,27 @@
+
+uiskin.png
+size: 2048,1024
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+GGGG title
+  rotate: false
+  xy: 2, 146
+  size: 1280, 720
+  orig: 1280, 720
+  offset: 0, 0
+  index: -1
+play
+  rotate: false
+  xy: 2, 2
+  size: 143, 142
+  orig: 143, 142
+  offset: 0, 0
+  index: -1
+settings
+  rotate: false
+  xy: 1284, 724
+  size: 143, 142
+  orig: 143, 142
+  offset: 0, 0
+  index: -1

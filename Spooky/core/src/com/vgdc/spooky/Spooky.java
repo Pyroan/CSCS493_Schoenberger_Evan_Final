@@ -3,6 +3,7 @@ package com.vgdc.spooky;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.assets.AssetManager;
 import com.vgdc.screens.GameScreen;
+import com.vgdc.screens.MenuScreen;
 import com.vgdc.screens.ScoreScreen;
 import com.vgdc.ui.Fonts;
 
@@ -31,7 +32,7 @@ public class Spooky extends Game {
 		Fonts.instance.init();
 		initializeThings();
 
-		setScreen(new GameScreen(this));
+		setScreen(new MenuScreen(this));
 	}
 
 	public void initializeThings()

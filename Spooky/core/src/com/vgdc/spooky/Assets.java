@@ -10,10 +10,12 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
 import com.badlogic.gdx.utils.Disposable;
 import com.vgdc.utils.Constants;
+import com.badlogic.gdx.graphics.g2d.Animation;
+import com.badlogic.gdx.utils.Array;
 
 /**
  * Contains references to all of our assets.
- * @author Derek B.
+ * @author Evan S.
  *
  */
 public class Assets implements Disposable, AssetErrorListener
@@ -39,6 +41,7 @@ public class Assets implements Disposable, AssetErrorListener
 	public AssetCandy candy;
 	public VerticalHouse vHouse;
 	public HorizontalHouse hHouse;
+	public AssetSpooky spooky;
 	
 
 	public void init (AssetManager assetManager) {
@@ -78,6 +81,7 @@ public class Assets implements Disposable, AssetErrorListener
 		candy = new AssetCandy(atlas);
 		vHouse = new VerticalHouse(atlas);
 		hHouse = new HorizontalHouse(atlas);
+		spooky = new AssetSpooky(atlas);
 		
 	}
 	@Override
@@ -195,6 +199,25 @@ public class Assets implements Disposable, AssetErrorListener
 		public HorizontalHouse(TextureAtlas atlas)
 		{
 			hHouse = atlas.findRegion("horizontal-house");
+		}
+	}
+	
+	public class AssetSpooky
+	{
+		public final AtlasRegion spooky;
+		public final Animation animSpooky;
+		
+		public AssetSpooky (TextureAtlas atlas)
+		{
+			spooky = atlas.findRegion("spooky", 1);
+			
+			// Animation
+			Array<AtlasRegion> regions =
+					atlas.findRegions("spooky");
+			AtlasRegion region = regions.first();
+			for (int i = 0; i < 10; i++)
+				regions.insert(0,  region);
+			animSpooky = new Animation(1.0f/3.0f, regions, Animation.PlayMode.LOOP_PINGPONG);
 		}
 	}
 
