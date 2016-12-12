@@ -6,84 +6,126 @@ filter: Nearest,Nearest
 repeat: none
 Big Tree
   rotate: false
-  xy: 260, 290
+  xy: 260, 302
   size: 128, 192
   orig: 128, 192
   offset: 0, 0
   index: -1
 abe
   rotate: false
-  xy: 390, 354
+  xy: 390, 366
   size: 64, 128
   orig: 64, 128
   offset: 0, 0
   index: -1
 abe-back
   rotate: false
-  xy: 132, 58
+  xy: 132, 70
   size: 64, 128
   orig: 64, 128
   offset: 0, 0
   index: -1
 abe-left
   rotate: false
-  xy: 234, 160
+  xy: 234, 172
   size: 64, 128
   orig: 64, 128
   offset: 0, 0
   index: -1
 abe-right
   rotate: false
-  xy: 300, 160
+  xy: 300, 172
   size: 64, 128
   orig: 64, 128
   offset: 0, 0
   index: -1
 bush
   rotate: false
-  xy: 2, 2
+  xy: 456, 466
   size: 28, 28
   orig: 28, 28
   offset: 0, 0
   index: -1
 candy
   rotate: false
-  xy: 390, 288
+  xy: 390, 300
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: -1
 horizontal-house
   rotate: false
-  xy: 2, 290
+  xy: 2, 302
   size: 256, 192
   orig: 256, 192
   offset: 0, 0
   index: -1
 rock1
   rotate: false
-  xy: 132, 188
+  xy: 132, 200
   size: 100, 100
   orig: 100, 100
   offset: 0, 0
   index: -1
 snow - Copy
   rotate: false
-  xy: 366, 222
+  xy: 262, 4
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: -1
+spooky
+  rotate: false
+  xy: 2, 10
+  size: 128, 32
+  orig: 128, 32
+  offset: 0, 0
+  index: 1
+spooky
+  rotate: false
+  xy: 198, 138
+  size: 128, 32
+  orig: 128, 32
+  offset: 0, 0
+  index: 2
+spooky
+  rotate: false
+  xy: 198, 104
+  size: 128, 32
+  orig: 128, 32
+  offset: 0, 0
+  index: 3
+spooky
+  rotate: false
+  xy: 198, 70
+  size: 128, 32
+  orig: 128, 32
+  offset: 0, 0
+  index: 4
+spooky
+  rotate: false
+  xy: 132, 36
+  size: 128, 32
+  orig: 128, 32
+  offset: 0, 0
+  index: 5
+spooky
+  rotate: false
+  xy: 132, 2
+  size: 128, 32
+  orig: 128, 32
+  offset: 0, 0
+  index: 6
 tree1
   rotate: false
-  xy: 456, 451
+  xy: 328, 139
   size: 25, 31
   orig: 25, 31
   offset: 0, 0
   index: -1
 vertical-house
   rotate: false
-  xy: 2, 32
+  xy: 2, 44
   size: 128, 256
   orig: 128, 256
   offset: 0, 0

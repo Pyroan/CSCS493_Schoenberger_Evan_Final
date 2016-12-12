@@ -1,7 +1,7 @@
 package com.vgdc.objects;
 
+import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
@@ -33,6 +33,9 @@ public abstract class AbstractGameObject {
 	public Rectangle bounds;
 
 	public Body body;
+	
+	public float stateTime;
+	public Animation animation;
 
 	public AbstractGameObject() {
 		position = new Vector2();
@@ -89,6 +92,7 @@ public abstract class AbstractGameObject {
 	 * @param deltaTime
 	 */
 	public void update (float deltaTime) {
+		stateTime += deltaTime;
 		if (body == null) 
 		{
 			updateMotionX(deltaTime);
@@ -96,8 +100,10 @@ public abstract class AbstractGameObject {
 			// Move to new position
 			position.x += velocity.x * deltaTime;
 			position.y += velocity.y * deltaTime;
+		} else
+		{
+			position.set(body.getPosition());	
 		}
-		position.set(body.getPosition());
 //		rotation = body.getAngle() * MathUtils.radiansToDegrees;
 	}
 
@@ -129,6 +135,12 @@ public abstract class AbstractGameObject {
 	//
 	//		return pBody;
 	//	}
+	
+	public void setAnimation(Animation animation)
+	{
+		this.animation = animation;
+		stateTime = 0;
+	}
 
 	public abstract float getWidth();
 	public abstract float getHeight();

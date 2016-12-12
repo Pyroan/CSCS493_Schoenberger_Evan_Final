@@ -230,6 +230,8 @@ public class WorldController {
 			game.setScreen(new ScoreScreen(game));
 		if (Gdx.input.isKeyJustPressed(Keys.ESCAPE))
 			game.setScreen(new MenuScreen(game));
+		if (Gdx.input.isKeyJustPressed(Keys.L))
+			Constants.LSD_MODE = Constants.LSD_MODE ? false : true;
 		// Test a mock encounter.
 	}
 

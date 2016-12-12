@@ -15,8 +15,8 @@ public class DesktopLauncher {
 		if(rebuildAtlas)
 		{
 			Settings settings = new Settings();
-			settings.maxWidth = 1024;
-			settings.maxHeight = 1024;
+//			settings.maxWidth = 1024;
+//			settings.maxHeight = 1024;
 			settings.duplicatePadding = false;
 			settings.debug = drawDebugOutline;
 			TexturePacker.process(settings, "../core/assets/tiles", "../core/assets/tiles", "tiles");

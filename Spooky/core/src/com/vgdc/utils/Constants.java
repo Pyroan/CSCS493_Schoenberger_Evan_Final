@@ -47,4 +47,6 @@ public final class Constants {
 	
 	public static final String ATLAS_UI = "ui/uiskin.atlas";
 	public static final String SKIN_UI = "ui/uiskin.json";
+
+	public static boolean LSD_MODE = false;
 }
