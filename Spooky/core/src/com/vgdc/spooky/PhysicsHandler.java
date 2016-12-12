@@ -24,7 +24,7 @@ public class PhysicsHandler implements ContactListener {
 			if (contact.getFixtureB().getBody().getUserData() instanceof Candy)
 			{
 				Candy candy = (Candy)contact.getFixtureB().getBody().getUserData();
-				candy.collected = true;
+				candy.makeCollected();
 //				worldController
 			}
 		}
@@ -33,7 +33,7 @@ public class PhysicsHandler implements ContactListener {
 			if (contact.getFixtureA().getBody().getUserData() instanceof Candy)
 			{
 				Candy candy = (Candy)contact.getFixtureB().getBody().getUserData();
-				candy.collected = true;
+				candy.makeCollected();
 			}
 		}
 	}

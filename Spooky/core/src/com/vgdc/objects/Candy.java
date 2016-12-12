@@ -17,6 +17,8 @@ public class Candy extends AbstractGameObject
 	private TextureRegion reg;
 
 	public boolean collected;
+	// Was the candy collected in the previous frame?
+	public boolean justCollected;
 
 	Pixmap pixmap = new Pixmap(200, 200, Format.RGBA8888);
 	public Candy()
@@ -58,6 +60,11 @@ public class Candy extends AbstractGameObject
 		{
 			body.setActive(false);
 		}
+	}
+	
+	public void makeCollected() {
+		collected = true;
+		justCollected = true;
 	}
 
 }

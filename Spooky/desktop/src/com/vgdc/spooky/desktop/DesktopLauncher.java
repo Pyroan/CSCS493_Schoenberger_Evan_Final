@@ -9,6 +9,7 @@ import com.vgdc.spooky.Spooky;
 public class DesktopLauncher {
 	// Builds the Sprite Sheet (Texture Atlas)
 	private static boolean rebuildAtlas  = false;
+	private static boolean rebuildMenuAtlas = false;
 	private static boolean drawDebugOutline = false;
 	public static void main (String[] arg) {
 		if(rebuildAtlas)
@@ -19,6 +20,15 @@ public class DesktopLauncher {
 			settings.duplicatePadding = false;
 			settings.debug = drawDebugOutline;
 			TexturePacker.process(settings, "../core/assets/tiles", "../core/assets/tiles", "tiles");
+		}
+		if (rebuildMenuAtlas)
+		{
+			Settings settings = new Settings();
+			settings.maxWidth = 2048;
+			settings.maxHeight = 2048;
+			settings.duplicatePadding = false;
+			settings.debug = drawDebugOutline;
+			TexturePacker.process(settings, "../core/assets/ui", "../core/assets/ui", "uiskin");
 		}
 	// Sets up the whole shebang (i.e. the game/window).
 		LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();

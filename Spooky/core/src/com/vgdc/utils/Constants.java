@@ -42,4 +42,9 @@ public final class Constants {
 
 	// Name of our real level.
 	public static final String LEVEL_NAME = "level-01.png";
+
+	public static final String PREFERENCES = "prefs.txt";
+	
+	public static final String ATLAS_UI = "ui/uiskin.atlas";
+	public static final String SKIN_UI = "ui/uiskin.json";
 }

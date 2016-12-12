@@ -14,6 +14,7 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.vgdc.audio.MusicPlayer;
 import com.vgdc.objects.Candy;
 import com.vgdc.objects.Floor;
+import com.vgdc.screens.MenuScreen;
 import com.vgdc.screens.ScoreScreen;
 import com.vgdc.ui.UIController;
 import com.vgdc.utils.CameraHelper;
@@ -154,6 +155,7 @@ public class WorldController {
 					candy.dimension.y / 4.0f, origin, 0);
 			fixtureDef = new FixtureDef();
 			fixtureDef.shape = polygonShape;
+			fixtureDef.friction = 0;
 			body.createFixture(fixtureDef);
 			body.setUserData(candy);
 			polygonShape.dispose();
@@ -184,6 +186,17 @@ public class WorldController {
 			{
 				collectedCandies++;
 			}
+			if (candy.justCollected)
+			{
+				musicPlayer.playPickup();
+				candy.justCollected = false;
+			}
+		}
+		
+		if (collectedCandies == numberOfCandies)
+		{
+//			die inside?
+			String time = uiController.getTimer().getTime();
 		}
 	}
 
@@ -215,6 +228,8 @@ public class WorldController {
 		// Switch to the High Score screen.
 		if (Gdx.input.isKeyJustPressed(Keys.Y))
 			game.setScreen(new ScoreScreen(game));
+		if (Gdx.input.isKeyJustPressed(Keys.ESCAPE))
+			game.setScreen(new MenuScreen(game));
 		// Test a mock encounter.
 	}
 
@@ -291,6 +306,8 @@ public class WorldController {
 
 	public void dispose()
 	{
-		
+		level.dispose();
+		musicPlayer.dispose();
+		snow.dispose();
 	}
 }

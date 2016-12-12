@@ -67,4 +67,9 @@ public class UIController {
 		Fonts.instance.gamer.setColor(Color.WHITE);
 		Fonts.instance.gamer.draw(batch, time, x, y);
 	}
+	
+	public GameTimer getTimer()
+	{
+		return timer;
+	}
 }
