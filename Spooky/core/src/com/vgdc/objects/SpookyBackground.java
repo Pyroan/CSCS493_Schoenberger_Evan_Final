@@ -56,7 +56,7 @@ public class SpookyBackground extends AbstractGameObject
 					batch.setColor(r, g, b, 1);
 				} else
 				{
-					batch.setColor(i/10.0f, j/10.0f, 1, 1);
+					batch.setColor(i/10.0f, j/10.0f, .5f, 1);
 				}
 				batch.draw(reg.getTexture(), origin.x + xRel, position.y + origin.y + yRel,
 						origin.x, origin.y, dimension.x, dimension.y, scale.x, scale.y, rotation,

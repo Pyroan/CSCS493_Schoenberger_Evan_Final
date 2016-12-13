@@ -1,8 +1,10 @@
 package com.vgdc.objects;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Pixmap.Format;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.vgdc.spooky.Assets;
@@ -21,6 +23,8 @@ public class Player extends AbstractGameObject
 	public TextureRegion back;
 	public TextureRegion left;
 	public TextureRegion right;
+	
+	public ParticleEffect cloud = new ParticleEffect();
 
 	Pixmap pixmap = new Pixmap(200, 200, Format.RGBA8888);
 	public Player()
@@ -36,6 +40,10 @@ public class Player extends AbstractGameObject
 		left = new TextureRegion(Assets.instance.left.left1);
 		right = new TextureRegion(Assets.instance.right.right1);
 		
+		// Make the particles work
+		cloud.load(Gdx.files.internal("particles/cloud.prt"), Gdx.files.internal("particles"));
+		cloud.scaleEffect(.1f);
+		
 		dimension.set(1,2);
 //		bounds.set(origin.x,origin.y, dimension.x * .75f, dimension.y * .75f);
 		origin.set(dimension.x/2, dimension.y/2);
@@ -44,6 +52,13 @@ public class Player extends AbstractGameObject
 
 	}
 	
+	@Override
+	public void update(float deltaTime)
+	{
+		super.update(deltaTime);
+		cloud.update(deltaTime);
+		cloud.setPosition(position.x, position.y+.2f);
+	}
 	
 	@Override
 	public void render(SpriteBatch batch) {
@@ -51,6 +66,7 @@ public class Player extends AbstractGameObject
 				origin.x, origin.y, dimension.x, dimension.y,
 				scale.x, scale.y, rotation, reg.getRegionX(), reg.getRegionY(),
 				reg.getRegionWidth(), reg.getRegionHeight(), false, false);
+		cloud.draw(batch);
 	}
 	
 	public void setTexture(TextureRegion reg) {
@@ -64,6 +80,4 @@ public class Player extends AbstractGameObject
 	public float getHeight() {
 		return tex.getHeight();
 	}
-
-
 }
