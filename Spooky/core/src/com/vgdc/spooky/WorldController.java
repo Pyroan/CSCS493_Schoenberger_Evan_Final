@@ -243,7 +243,7 @@ public class WorldController {
 	{
 		if (cameraHelper.hasTarget()) return;
 
-		float cameraMoveSpeed = 5 * deltaTime;
+		float cameraMoveSpeed = 20 * deltaTime;
 		if(Gdx.input.isKeyPressed(Keys.W))
 		{
 			moveCamera(0, cameraMoveSpeed);
@@ -290,7 +290,7 @@ public class WorldController {
 		}
 
 		level.player.body.applyLinearImpulse(moveVector, level.player.position, true);
-		
+
 //		// Rotate the player?
 //		if (Gdx.input.isKeyJustPressed(Keys.Q))
 //		{
