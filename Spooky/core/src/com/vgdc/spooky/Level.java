@@ -15,7 +15,7 @@ import com.vgdc.objects.HorizontalHouse;
 import com.vgdc.objects.SpookyBackground;
 import com.vgdc.objects.VerticalHouse;
 import com.vgdc.objects.Player;
-import com.vgdc.objects.Rock;
+import com.vgdc.objects.Meds;
 import com.vgdc.objects.Tree;
 import com.vgdc.utils.Constants;
 
@@ -95,7 +95,7 @@ public class Level implements Disposable {
 	// Objects
 	public Array<Tree> trees;
 	public Array<Bush> bushes;
-	public Array<Rock> rocks;
+	public Array<Meds> rocks;
 	public Array<Floor> tiles;
 	public Array<Candy> candies;
 	public Array<VerticalHouse> verticalHouses;
@@ -115,7 +115,7 @@ public class Level implements Disposable {
 		// objects
 		trees = new Array<Tree>();
 		bushes = new Array<Bush>();
-		rocks = new Array<Rock>();
+		rocks = new Array<Meds>();
 		tiles = new Array<Floor>();
 		candies = new Array<Candy>();
 		verticalHouses = new Array<VerticalHouse>();
@@ -154,10 +154,10 @@ public class Level implements Disposable {
 
 				// Rock
 				else if (TILE.ROCK.sameColor(currentPixel)) {
-					obj = new Rock();
+					obj = new Meds();
 					obj.position.set(pixelX, baseHeight);
 					//					obj.createBox(obj.position.x, obj.position.y, obj.getWidth(), obj.getHeight(), true);
-					rocks.add((Rock)obj);
+					candies.add((Meds)obj);
 				}
 
 				// Player
@@ -238,7 +238,7 @@ public class Level implements Disposable {
 				floor.render(batch);
 
 			// Draw Rocks
-			for (Rock rock: rocks)
+			for (Meds rock: rocks)
 				rock.render(batch);
 
 			// Draw Bushes
@@ -274,7 +274,7 @@ public class Level implements Disposable {
 		for (Floor floor: tiles)
 			floor.update(deltaTime);
 		// Rocks
-		for (Rock rock: rocks)
+		for (Meds rock: rocks)
 			rock.update(deltaTime);
 
 		// Houses

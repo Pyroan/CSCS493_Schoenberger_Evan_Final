@@ -14,7 +14,7 @@ import com.vgdc.spooky.Assets;
  */
 public class Candy extends AbstractGameObject
 {
-	private TextureRegion reg;
+	protected TextureRegion reg;
 
 	public boolean collected;
 	// Was the candy collected in the previous frame?

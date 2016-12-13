@@ -124,7 +124,7 @@ public class Assets implements Disposable, AssetErrorListener
 		public final AtlasRegion rock;
 		public AssetRock(TextureAtlas atlas)
 		{
-			rock = atlas.findRegion("rock1");
+			rock = atlas.findRegion("meds");
 		}
 	}
 

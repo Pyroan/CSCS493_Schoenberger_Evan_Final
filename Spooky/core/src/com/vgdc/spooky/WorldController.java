@@ -12,13 +12,16 @@ import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.vgdc.audio.MusicPlayer;
+import com.vgdc.objects.AbstractGameObject;
 import com.vgdc.objects.Candy;
 import com.vgdc.objects.Floor;
+import com.vgdc.objects.Meds;
 import com.vgdc.screens.MenuScreen;
 import com.vgdc.screens.ScoreScreen;
 import com.vgdc.ui.UIController;
 import com.vgdc.utils.CameraHelper;
 import com.vgdc.utils.Constants;
+import com.vgdc.utils.GameTimer;
 
 /**
  * I'd be lying if i said I was prepared to explain
@@ -45,7 +48,7 @@ public class WorldController {
 	public UIController uiController;
 
 	public World b2world;
-	
+
 	public PhysicsHandler physicsHandler;
 
 	public static int numberOfCandies;
@@ -86,7 +89,7 @@ public class WorldController {
 		AlternativeMapGen mg = new AlternativeMapGen(Constants.MAP_WIDTH, Constants.MAP_HEIGHT, seed);
 		// We're actually not gonna use Procedural generation for now but I'll leave the code for later.
 		// That's disgusting how Dare I do that.
-		level = new Level(Constants.LEVEL_NAME);
+		level = new Level(Constants.LEVEL_01);
 		//		level = new Level(mg.getPixmap());
 		mg.dispose();
 		if (!Constants.DEBUGGING_MAP) cameraHelper.setTarget(level.player);
@@ -112,7 +115,7 @@ public class WorldController {
 			PolygonShape polygonShape = new PolygonShape();
 			origin.x = floor.dimension.x / 2.0f;
 			origin.y = floor.dimension.y / 2.0f;
-			polygonShape.setAsBox(floor.dimension.x /2.0f,
+			polygonShape.setAsBox(floor.dimension.x / 2.0f,
 					floor.dimension.y / 2.0f, origin, 0);
 			FixtureDef fixtureDef = new FixtureDef();
 			fixtureDef.shape = polygonShape;
@@ -138,28 +141,36 @@ public class WorldController {
 		body.createFixture(fixtureDef);
 		body.setUserData(level.player);
 		polygonShape.dispose();
-		// Candies
+		// Candies and Meds
 		origin = new Vector2();
 		for (Candy candy: level.candies)
 		{
-			bodyDef = new BodyDef();
-			bodyDef.type = BodyType.KinematicBody;
-			bodyDef.position.set(candy.position);
-			bodyDef.fixedRotation = false;
-			body = b2world.createBody(bodyDef);
-			candy.body = body;
-			polygonShape = new PolygonShape();
-			origin.x = candy.dimension.x /2.0f;
-			origin.y = candy.dimension.y / 2.0f;
-			polygonShape.setAsBox(candy.dimension.x / 4.0f,
-					candy.dimension.y / 4.0f, origin, 0);
-			fixtureDef = new FixtureDef();
-			fixtureDef.shape = polygonShape;
-			fixtureDef.friction = 0;
-			body.createFixture(fixtureDef);
-			body.setUserData(candy);
-			polygonShape.dispose();
+			makeCandyBox(candy);
 		}
+	}
+
+	public void makeCandyBox(AbstractGameObject object)
+	{
+		BodyDef bodyDef = new BodyDef();
+		Vector2 origin = new Vector2();
+		Body body = b2world.createBody(bodyDef);
+		PolygonShape polygonShape;
+		bodyDef.type = BodyType.KinematicBody;
+		bodyDef.position.set(object.position);
+		bodyDef.fixedRotation = false;
+		body = b2world.createBody(bodyDef);
+		object.body = body;
+		polygonShape = new PolygonShape();
+		origin.x = object.dimension.x /2.0f;
+		origin.y = object.dimension.y / 2.0f;
+		polygonShape.setAsBox(object.dimension.x / 4.0f,
+				object.dimension.y / 4.0f, origin, 0);
+		FixtureDef fixtureDef = new FixtureDef();
+		fixtureDef.shape = polygonShape;
+		fixtureDef.friction = 0;
+		body.createFixture(fixtureDef);
+		body.setUserData(object);
+		polygonShape.dispose();
 	}
 
 	public void update(float deltaTime)
@@ -178,25 +189,63 @@ public class WorldController {
 		musicPlayer.update(deltaTime);
 		// Update Snow.
 		snow.update(deltaTime);
-		
+
 		collectedCandies = 0;
 		for (Candy candy : level.candies)
 		{
-			if (candy.collected)
+			if (candy instanceof Meds)
 			{
-				collectedCandies++;
-			}
-			if (candy.justCollected)
+				if (candy.justCollected)
+				{
+					musicPlayer.playLSDPickup();
+					handleLSDmode(deltaTime);
+					candy.justCollected = false;
+				}
+			} else
 			{
-				musicPlayer.playPickup();
-				candy.justCollected = false;
+				if (candy.collected)
+				{
+					collectedCandies++;
+				}
+				if (candy.justCollected)
+				{
+					musicPlayer.playPickup();
+					candy.justCollected = false;
+				}
 			}
 		}
-		
+
 		if (collectedCandies == numberOfCandies)
 		{
-//			die inside?
+			//			die inside?
 			String time = uiController.getTimer().getTime();
+		}
+		
+		if (Constants.LSD_MODE)
+			handleLSDmode(deltaTime);
+	}
+	
+	/**
+	 * Makes Crazy Drug Mode Happen for 6 seconds
+	 * @param deltaTime
+	 */
+	GameTimer timer;
+	private void handleLSDmode(float deltaTime)
+	{
+		float drugTime = 10.0f;
+		if (Constants.LSD_MODE)
+		{
+			timer.update(deltaTime);
+			if (timer.getRawTime() > drugTime)
+			{
+				Constants.LSD_MODE = false;
+			}
+			System.out.println("Timer time: " + timer.getRawTime());
+		} else
+			// When drug mode first starts.
+		{
+			timer = new GameTimer();
+			Constants.LSD_MODE = true;
 		}
 	}
 
@@ -291,18 +340,18 @@ public class WorldController {
 
 		level.player.body.applyLinearImpulse(moveVector, level.player.position, true);
 
-//		// Rotate the player?
-//		if (Gdx.input.isKeyJustPressed(Keys.Q))
-//		{
-//			float rotation = level.player.body.getAngle() / 90;
-//			if (level.player.body.getAngle() > rotation - 90)
-//			{
-//				level.player.body.setAngularVelocity(20);
-//			} else
-//			{
-//				level.player.body.setAngularVelocity(0);
-//			}
-//		}
+		//		// Rotate the player?
+		//		if (Gdx.input.isKeyJustPressed(Keys.Q))
+		//		{
+		//			float rotation = level.player.body.getAngle() / 90;
+		//			if (level.player.body.getAngle() > rotation - 90)
+		//			{
+		//				level.player.body.setAngularVelocity(20);
+		//			} else
+		//			{
+		//				level.player.body.setAngularVelocity(0);
+		//			}
+		//		}
 	}
 
 

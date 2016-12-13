@@ -15,7 +15,7 @@ public class Floor extends AbstractGameObject{
 
 	// Sets some stuff, finds reg.
 	private void init() {
-		dimension.set(1,1);
+		dimension.set(1.01f,1.01f);
 		reg = Assets.instance.snowTiles.tiles1;
 	}
 

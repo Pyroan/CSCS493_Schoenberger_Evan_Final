@@ -13,28 +13,28 @@ Big Tree
   index: -1
 abe
   rotate: false
-  xy: 390, 366
+  xy: 132, 172
   size: 64, 128
   orig: 64, 128
   offset: 0, 0
   index: -1
 abe-back
   rotate: false
-  xy: 132, 70
+  xy: 390, 366
   size: 64, 128
   orig: 64, 128
   offset: 0, 0
   index: -1
 abe-left
   rotate: false
-  xy: 234, 172
+  xy: 198, 172
   size: 64, 128
   orig: 64, 128
   offset: 0, 0
   index: -1
 abe-right
   rotate: false
-  xy: 300, 172
+  xy: 264, 172
   size: 64, 128
   orig: 64, 128
   offset: 0, 0
@@ -48,7 +48,7 @@ bush
   index: -1
 candy
   rotate: false
-  xy: 390, 300
+  xy: 262, 106
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
@@ -60,16 +60,16 @@ horizontal-house
   orig: 256, 192
   offset: 0, 0
   index: -1
-rock1
+meds
   rotate: false
-  xy: 132, 200
-  size: 100, 100
-  orig: 100, 100
+  xy: 262, 40
+  size: 64, 64
+  orig: 64, 64
   offset: 0, 0
   index: -1
 snow - Copy
   rotate: false
-  xy: 262, 4
+  xy: 390, 300
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
@@ -83,21 +83,21 @@ spooky
   index: 1
 spooky
   rotate: false
-  xy: 198, 138
+  xy: 132, 138
   size: 128, 32
   orig: 128, 32
   offset: 0, 0
   index: 2
 spooky
   rotate: false
-  xy: 198, 104
+  xy: 132, 104
   size: 128, 32
   orig: 128, 32
   offset: 0, 0
   index: 3
 spooky
   rotate: false
-  xy: 198, 70
+  xy: 132, 70
   size: 128, 32
   orig: 128, 32
   offset: 0, 0
@@ -118,7 +118,7 @@ spooky
   index: 6
 tree1
   rotate: false
-  xy: 328, 139
+  xy: 262, 7
   size: 25, 31
   orig: 25, 31
   offset: 0, 0

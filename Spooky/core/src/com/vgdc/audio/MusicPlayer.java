@@ -3,6 +3,7 @@ package com.vgdc.audio;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
+import com.vgdc.utils.Constants;
 
 /**
  * Handles our music
@@ -11,11 +12,12 @@ import com.badlogic.gdx.audio.Sound;
 public class MusicPlayer
 {
 	private Music backgroundSong;
+	private Music drugSong;
 	private Music nathanielSnoring;
 	private Music wind;
 	
 	private Sound pickup;
-	private Sound everyTen;
+	private Sound lsdPickup;
 
 	/**
 	 * Initialize all our Music.
@@ -25,9 +27,15 @@ public class MusicPlayer
 		// BG sound
 		backgroundSong =
 				Gdx.audio.newMusic(Gdx.files.internal("dead guy.mp3"));
-		backgroundSong.setVolume(.5f);
+//				Gdx.audio.newMusic(Gdx.files.internal("Snow in October.mp3"));
+		backgroundSong.setVolume(.7f);
 		backgroundSong.play();
 		backgroundSong.setLooping(true);
+		// Drug version of BG sound
+		drugSong = Gdx.audio.newMusic(Gdx.files.internal("Snow in October Reverse.mp3"));
+		drugSong.setVolume(.0f);
+		drugSong.setLooping(true);
+		drugSong.play();
 		// NathanielSnoring
 		nathanielSnoring =
 				Gdx.audio.newMusic(Gdx.files.internal("Nathaniel Snoring.mp3"));
@@ -39,7 +47,7 @@ public class MusicPlayer
 		
 		// Initialize Sounds
 		pickup = Gdx.audio.newSound(Gdx.files.internal("Pickup_Coin.wav"));
-		everyTen = Gdx.audio.newSound(Gdx.files.internal("everyTen.wav"));
+		lsdPickup = Gdx.audio.newSound(Gdx.files.internal("everyTen.wav"));
 	}
 
 	/**
@@ -55,20 +63,30 @@ public class MusicPlayer
 		{
 			nathanielSnoring.stop();
 		}
+		// Set the background music based on whether drugs are happening.
+		if (Constants.LSD_MODE)
+		{
+			backgroundSong.setVolume(0);
+			drugSong.setVolume(1.0f);
+		} else 
+		{
+			drugSong.setVolume(0f);
+			backgroundSong.setVolume(.7f);
+		}
 	}
 	
 	public void playPickup()
 	{
 		pickup.play();
 	}
-	public void playEveryTen()
+	public void playLSDPickup()
 	{
-		everyTen.play();
+		lsdPickup.play();
 	}
 	
 	public void dispose()
 	{
-		everyTen.dispose();
+		lsdPickup.dispose();
 		pickup.dispose();
 		wind.dispose();
 		nathanielSnoring.dispose();
