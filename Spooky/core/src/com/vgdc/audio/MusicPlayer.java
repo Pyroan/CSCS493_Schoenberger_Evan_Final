@@ -91,5 +91,6 @@ public class MusicPlayer
 		wind.dispose();
 		nathanielSnoring.dispose();
 		backgroundSong.dispose();
+		drugSong.dispose();
 	}
 }

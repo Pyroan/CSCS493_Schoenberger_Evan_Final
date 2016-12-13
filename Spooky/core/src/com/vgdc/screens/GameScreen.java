@@ -24,6 +24,8 @@ public class GameScreen extends AbstractGameScreen
 	public GameScreen (Game game)
 	{
 		super(game);
+		// Sets the clear screen color to: Not what the book wanted.
+		Gdx.gl.glClearColor(.1f, .1f, .1f, 0f);
 	}
 
 	@Override
@@ -33,8 +35,7 @@ public class GameScreen extends AbstractGameScreen
 		// since last rendered frame.
 		worldController.update(deltaTime);
 
-		// Sets the clear screen color to: Not what the book wanted.
-		Gdx.gl.glClearColor(.1f, .1f, .1f, 0f);
+
 		// Clears the screen
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		// Render game world to screen

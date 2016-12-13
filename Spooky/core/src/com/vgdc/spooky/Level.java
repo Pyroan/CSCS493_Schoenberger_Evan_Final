@@ -1,10 +1,10 @@
 package com.vgdc.spooky;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Disposable;
 import com.vgdc.objects.AbstractGameObject;
@@ -123,7 +123,6 @@ public class Level implements Disposable {
 		for (int pixelY = 0; pixelY < pixmap.getHeight(); pixelY++) {
 			for (int pixelX = 0; pixelX < pixmap.getWidth(); pixelX++) {
 				AbstractGameObject obj = null;
-				float offsetHeight = 0;
 				// Height goes from bottom to top.
 				float baseHeight = pixmap.getHeight() - pixelY;
 				// get color of current pixel as 32 bit RGBA value
@@ -235,6 +234,11 @@ public class Level implements Disposable {
 		} else{
 
 			spooky.render(batch);
+			batch.setColor(Color.WHITE);
+			// Draw Candies
+			for (Candy candy: candies)
+				candy.render(batch);
+
 			if (Constants.LSD_MODE)
 			{
 				float r = (float)Math.random();
@@ -257,10 +261,6 @@ public class Level implements Disposable {
 			// Draw trees
 			for (Tree tree: trees)
 				tree.render(batch);
-
-			// Draw Candies
-			for (Candy candy: candies)
-				candy.render(batch);
 
 			player.render(batch);
 			// Draw houses

@@ -1,5 +1,8 @@
 package com.vgdc.spooky;
 
+import java.util.ArrayList;
+import java.util.LinkedList;
+
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
@@ -58,16 +61,23 @@ public class WorldController {
 
 	private static final String TAG = WorldController.class.getName();
 
+	LinkedList<String> levels = new LinkedList<String>();
+
 	public WorldController() {
 		init();
 	}
 
 	public WorldController (Game game) {
 		this.game = game;
+
+		// Doing this thing instead of something smart
+		levels.add(Constants.LEVEL_01);
+		levels.add(Constants.LEVEL_02);
 		init();
 	}
 
 	private void init() {
+		dispose();
 		cameraHelper = new CameraHelper();
 		controller = new PlayerControls();
 		musicPlayer = new MusicPlayer();
@@ -84,16 +94,12 @@ public class WorldController {
 	 * Initializes the level (right now with a given seed)
 	 */
 	private void initLevel() {
-		long seed = 123456789; // Seed can be up to 9 digits long (for now).
-		//		MapGenerator mg = new MapGenerator(Constants.MAP_WIDTH, Constants.MAP_HEIGHT, seed);
-		AlternativeMapGen mg = new AlternativeMapGen(Constants.MAP_WIDTH, Constants.MAP_HEIGHT, seed);
-		// We're actually not gonna use Procedural generation for now but I'll leave the code for later.
-		// That's disgusting how Dare I do that.
-		level = new Level(Constants.LEVEL_01);
-		//		level = new Level(mg.getPixmap());
-		mg.dispose();
+
+		String name = levels.poll();
+		level = new Level(name);
+
 		if (!Constants.DEBUGGING_MAP) cameraHelper.setTarget(level.player);
-		numberOfCandies = level.getNumberOfCandies();
+		numberOfCandies = 30;
 	}
 
 	/**
@@ -217,19 +223,33 @@ public class WorldController {
 
 		if (collectedCandies == numberOfCandies)
 		{
-			//			die inside?
-			String time = uiController.getTimer().getTime();
+			nextLevel();
 		}
-		
+
 		if (Constants.LSD_MODE)
 			handleLSDmode(deltaTime);
 	}
 	
+	private void nextLevel()
+	{
+//		die inside?
+		String time = uiController.getTimer().getTime();
+		if (levels.peek() == null)
+		{
+			game.setScreen(new ScoreScreen(game));
+		}
+		else 
+		{
+			collectedCandies = 0;
+			init();
+		}
+	}
+
 	/**
 	 * Makes Crazy Drug Mode Happen for 6 seconds
 	 * @param deltaTime
 	 */
-	GameTimer timer;
+	GameTimer timer = new GameTimer();
 	private void handleLSDmode(float deltaTime)
 	{
 		float drugTime = 10.0f;
@@ -292,6 +312,8 @@ public class WorldController {
 			game.setScreen(new MenuScreen(game));
 		if (Gdx.input.isKeyJustPressed(Keys.L))
 			handleLSDmode(deltaTime);
+		if (Gdx.input.isKeyJustPressed(Keys.K))
+			nextLevel();
 		// Test a mock encounter.
 	}
 
@@ -350,26 +372,13 @@ public class WorldController {
 		}
 
 		level.player.body.applyLinearImpulse(moveVector, level.player.position, true);
-
-		//		// Rotate the player?
-		//		if (Gdx.input.isKeyJustPressed(Keys.Q))
-		//		{
-		//			float rotation = level.player.body.getAngle() / 90;
-		//			if (level.player.body.getAngle() > rotation - 90)
-		//			{
-		//				level.player.body.setAngularVelocity(20);
-		//			} else
-		//			{
-		//				level.player.body.setAngularVelocity(0);
-		//			}
-		//		}
 	}
 
 
 	public void dispose()
 	{
-		level.dispose();
-		musicPlayer.dispose();
-		snow.dispose();
+		if (level != null) level.dispose();
+		if (musicPlayer != null) musicPlayer.dispose();
+		if (snow != null) snow.dispose();
 	}
 }
