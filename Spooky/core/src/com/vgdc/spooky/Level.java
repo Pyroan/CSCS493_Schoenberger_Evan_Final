@@ -191,8 +191,17 @@ public class Level implements Disposable {
 
 				else if (TILE.GROUND.sameColor(currentPixel)) {
 					obj = new Floor();
-					obj.position.set(pixelX, baseHeight);
-					tiles.add((Floor)obj);
+					Floor fObj = (Floor)obj;
+					fObj.position.set(pixelX, baseHeight);
+					if (pixelX == 0 || pixelX == pixmap.getWidth()-1)
+					{
+						fObj.isBorder = true;
+					}
+					if (pixelY == 0 || pixelY == pixmap.getHeight()-1)
+					{
+						fObj.isBorder = true;
+					}
+					tiles.add(fObj);
 				}
 
 				// Unknown pixel color.

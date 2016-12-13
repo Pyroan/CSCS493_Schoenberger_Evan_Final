@@ -8,7 +8,9 @@ public class Floor extends AbstractGameObject{
 
 	// Texture Region of the tree asset
 	private TextureRegion reg;
-
+	// True if it's on the edge of the map.
+	public boolean isBorder;
+	
 	public Floor() {
 		init();
 	}

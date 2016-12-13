@@ -238,14 +238,25 @@ public class WorldController {
 			timer.update(deltaTime);
 			if (timer.getRawTime() > drugTime)
 			{
+				// Disable LSD mode
 				Constants.LSD_MODE = false;
+				// re-enable wall collision
+				for (Floor floor: level.tiles)
+				{
+					floor.body.setActive(true);;
+				}
 			}
-			System.out.println("Timer time: " + timer.getRawTime());
 		} else
 			// When drug mode first starts.
 		{
 			timer = new GameTimer();
 			Constants.LSD_MODE = true;
+			// disable wall collision
+			for (Floor floor: level.tiles)
+			{
+				if (!floor.isBorder)
+					floor.body.setActive(false);
+			}
 		}
 	}
 
@@ -280,7 +291,7 @@ public class WorldController {
 		if (Gdx.input.isKeyJustPressed(Keys.ESCAPE))
 			game.setScreen(new MenuScreen(game));
 		if (Gdx.input.isKeyJustPressed(Keys.L))
-			Constants.LSD_MODE = Constants.LSD_MODE ? false : true;
+			handleLSDmode(deltaTime);
 		// Test a mock encounter.
 	}
 
