@@ -230,6 +230,11 @@ public class WorldController {
 			handleLSDmode(deltaTime);
 	}
 	
+	/**
+	 * Advances the game to the next level.
+	 * If we're on the last level, takes us to the
+	 * score screen.
+	 */
 	private void nextLevel()
 	{
 //		die inside?
@@ -263,14 +268,16 @@ public class WorldController {
 				// re-enable wall collision
 				for (Floor floor: level.tiles)
 				{
-					floor.body.setActive(true);;
+					floor.body.setActive(true);
 				}
+				cameraHelper.zoomGoal = 1.0f;
 			}
 		} else
 			// When drug mode first starts.
 		{
 			timer = new GameTimer();
 			Constants.LSD_MODE = true;
+			cameraHelper.zoomGoal = 1.5f;
 			// disable wall collision
 			for (Floor floor: level.tiles)
 			{

@@ -10,6 +10,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.Align;
 import com.vgdc.screens.GameScreen;
+import com.vgdc.screens.MenuScreen;
 import com.vgdc.ui.Fonts;
 import com.vgdc.utils.Constants;
 
@@ -53,7 +54,15 @@ public class Scoreboard
 		for (int i = 0; i < scores.length; i++)
 		{
 			String entry = "";
-			entry += i + 1 + ". " + "TEST";
+			entry += i + 1 + ". ";
+			if (scores[i] != null) 
+			{
+				entry += scores[i].name;
+			}
+			else
+			{
+				entry += "--";
+			}
 			//		scores[i].name + "/t" + scores[i].score;
 			// who doesn't like magic numbers?
 			Fonts.instance.gamer.setColor(Color.WHITE);
@@ -65,11 +74,12 @@ public class Scoreboard
 	}
 
 	/**
-	 * Loads previous high scores to scores.txt
+	 * Loads previous high scores from scores.txt
 	 */
 	public void loadScores()
 	{
 		FileHandle fh = Gdx.files.internal("scores.txt");
+		// Reads in all the scores from scores.txt as a long string.
 		String rawScores = fh.readString();
 		// This feels a bit dirty
 		Scanner scoreReader = new Scanner(rawScores);
@@ -78,7 +88,8 @@ public class Scoreboard
 		while (scoreReader.hasNext())
 		{
 			// Get dat input
-			String s = scoreReader.next();
+			String s = scoreReader.nextLine();
+			System.out.println("S: " + s);
 			String[] data = s.split(" ");
 			// Process dat input
 			String name = data[0];
@@ -114,14 +125,22 @@ public class Scoreboard
 		}
 	}
 
+	/**
+	 * Handles any input we got hurr
+	 */
 	public void handleInput()
 	{
 		if (Gdx.input.isKeyJustPressed(Keys.Y))
 			game.setScreen(new GameScreen(game));
-	}
+		if (Gdx.input.isKeyJustPressed(Keys.K))
+			game.setScreen(new MenuScreen(game));
+	}	
 
+	/**
+	 * Free memory
+	 */
 	public void dispose()
 	{
-		batch.dispose();
+		batch.dispose();		
 	}
 }

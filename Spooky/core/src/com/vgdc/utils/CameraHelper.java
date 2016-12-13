@@ -20,6 +20,7 @@ public class CameraHelper {
 
 	private Vector2 position;
 	private float zoom;
+	public float zoomGoal;
 	private AbstractGameObject target;
 
 	public CameraHelper () {
@@ -31,6 +32,7 @@ public class CameraHelper {
 		}
 
 		zoom = 1.0f;
+		zoomGoal = 1.0f;
 	}
 
 	/**
@@ -40,7 +42,7 @@ public class CameraHelper {
 	 */
 	public void update (float deltaTime) {
 		if (!hasTarget()) return;
-
+		setZoom(MathUtils.lerp(zoom, zoomGoal, .1f));
 		// Move to where the target is.
 		position.x = target.position.x + target.origin.x;
 		position.y = target.position.y + target.origin.y;

@@ -69,4 +69,9 @@ public class ScoreTextReader
 		// So we end up with an array of strings that look like
 		// "<name> <number>".
 	}
+	
+	public String[] getScores()
+	{
+		return scores;
+	}
 }
