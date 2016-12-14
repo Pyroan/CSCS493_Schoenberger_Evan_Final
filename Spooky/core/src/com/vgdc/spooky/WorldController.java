@@ -63,7 +63,7 @@ public class WorldController {
 
 	private static final String TAG = WorldController.class.getName();
 
-	private boolean debugging = true;
+	private boolean debugging = false;
 
 	LinkedList<String> levels = new LinkedList<String>();
 
@@ -330,6 +330,8 @@ public class WorldController {
 	{
 		if (Gdx.input.isKeyJustPressed(Keys.ESCAPE))
 			game.setScreen(new MenuScreen(game));
+		if (Gdx.input.isKeyJustPressed(Keys.GRAVE))
+			debugging = debugging? false : true;
 		if (debugging)
 		{
 			if (Gdx.input.isKeyJustPressed(Keys.BACKSPACE))

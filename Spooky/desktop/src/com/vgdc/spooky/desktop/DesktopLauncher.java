@@ -37,9 +37,9 @@ public class DesktopLauncher {
 		config.height = 720;
 		config.backgroundFPS = 60;
 		config.foregroundFPS = 60;
-//		config.addIcon("../core/assets/icon.png", Files.FileType.Internal);
-//		config.addIcon("../core/assets/icon16x.png", Files.FileType.Internal);
-//		config.addIcon("../core/assets/icon128x.png", Files.FileType.Internal);
+		config.addIcon("../core/assets/icon.png", Files.FileType.Internal);
+		config.addIcon("../core/assets/icon16x.png", Files.FileType.Internal);
+		config.addIcon("../core/assets/icon128x.png", Files.FileType.Internal);
 		new LwjglApplication(new Spooky(), config);
 	}
 }
