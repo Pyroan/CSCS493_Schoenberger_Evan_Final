@@ -9,14 +9,16 @@ import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.Align;
+import com.badlogic.gdx.utils.Array;
 import com.vgdc.screens.GameScreen;
 import com.vgdc.screens.MenuScreen;
 import com.vgdc.ui.Fonts;
 import com.vgdc.utils.Constants;
+import com.vgdc.utils.GameTimer;
 
 public class Scoreboard
 {
-	private Entry[] scores;
+	private Array<Entry> scores;
 	private String title;
 
 	Game game;
@@ -25,18 +27,17 @@ public class Scoreboard
 	public Scoreboard(Game game)
 	{
 		this.game = game;
-		title = "HIGH SCORES";
-		scores = new Entry[10];
+		title = "LOCAL HIGH SCORES";
+		scores = new Array<Entry>(10);
 		batch = new SpriteBatch();
 		loadScores();
 	}
 
-	/**
-	 * Adds a new player/score to the score board.
-	 */
-	public void addEntry(String name, int score)
+	public Scoreboard(Game game, float playerScore)
 	{
-		// Add logic to have the scores actually be sorted.
+		this(game);
+		scores.add(new Entry ("You", (int)playerScore));
+		scores.sort();
 	}
 
 	/**
@@ -51,23 +52,44 @@ public class Scoreboard
 				Constants.VIEWPORT_GUI_WIDTH/2, Constants.VIEWPORT_GUI_HEIGHT - 50,
 				0, Align.center, false);
 		// Next, THE SCORES
-		for (int i = 0; i < scores.length; i++)
+		for (int i = 0; i < 10; i++)
 		{
 			String entry = "";
+			if ((i+1) / 10 == 0) entry = " ";
 			entry += i + 1 + ". ";
-			if (scores[i] != null) 
+			if (scores.get(i) != null) 
 			{
-				entry += scores[i].name;
+				entry += scores.get(i).name;
 			}
 			else
 			{
 				entry += "--";
 			}
+			
+			// Translate the Score version into readable time.
+			GameTimer gt = new GameTimer(scores.get(i).score);
+			String time = gt.getTime();
+			
+			for (int j = 0; j < 30 - scores.get(i).name.length(); j++)
+			{
+				entry+= " ";
+			}
+			
+			entry +=time;
 			//		scores[i].name + "/t" + scores[i].score;
 			// who doesn't like magic numbers?
-			Fonts.instance.gamer.setColor(Color.WHITE);
-			Fonts.instance.gamer.draw(batch, entry, Constants.VIEWPORT_GUI_WIDTH/2 - 300,
-					Constants.VIEWPORT_GUI_HEIGHT - 150 - (30 * i), 0, Align.left, false);
+			if (scores.get(i).name == "You")
+			{
+				Fonts.instance.gamer_fixed.setColor(Color.MAGENTA);
+			} else
+			{
+				Fonts.instance.gamer_fixed.setColor(Color.WHITE);
+			}
+	
+			Fonts.instance.gamer_fixed.draw(batch, entry, 
+					Constants.VIEWPORT_GUI_WIDTH/2,
+					Constants.VIEWPORT_GUI_HEIGHT - 150 - (30 * i), 
+					0, Align.center, false);
 		}
 		batch.end();
 		handleInput();
@@ -78,28 +100,9 @@ public class Scoreboard
 	 */
 	public void loadScores()
 	{
-		FileHandle fh = Gdx.files.internal("scores.txt");
-		// Reads in all the scores from scores.txt as a long string.
-		String rawScores = fh.readString();
-		// This feels a bit dirty
-		Scanner scoreReader = new Scanner(rawScores);
-		// Reads each line, separates it, uses data to make new entry.
-		int count=0;
-		while (scoreReader.hasNext())
-		{
-			// Get dat input
-			String s = scoreReader.nextLine();
-			System.out.println("S: " + s);
-			String[] data = s.split(" ");
-			// Process dat input
-			String name = data[0];
-			int score = Integer.parseInt(data[1]);
-			// Add dat data.
-			Entry e = new Entry(name, score);
-			scores[count] = e;
-			count++;
-		}
-		scoreReader.close();
+		ScoreTextReader str = 
+				new ScoreTextReader(Gdx.files.internal("scores.txt"));
+		scores = str.getScores();
 	}
 
 	/**
@@ -109,20 +112,6 @@ public class Scoreboard
 	{
 		FileHandle fh = Gdx.files.internal("scores.txt");
 		// Gotta write all the current scores to scores.txt
-	}
-
-	/**
-	 * Holds a name and a score.
-	 */
-	public class Entry
-	{
-		String name;
-		int score;
-		public Entry(String name, int score)
-		{
-			this.name = name;
-			this.score = score;
-		}
 	}
 
 	/**

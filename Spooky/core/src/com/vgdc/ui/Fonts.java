@@ -21,6 +21,7 @@ public class Fonts {
 
 	public BitmapFont gamer;
 	public BitmapFont gamer_big;
+	public BitmapFont gamer_fixed;
 
 	FreeTypeFontGenerator generator;
 
@@ -36,6 +37,12 @@ public class Fonts {
 		param.borderColor = Color.BLACK;
 		param.borderWidth = 2;
 		gamer = generator.generateFont(param);
+		
+		gamer_fixed = generator.generateFont(param);
+		// This better not be the best way to do this
+		CharSequence killMe = 
+				"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890.: ";
+		gamer_fixed.setFixedWidthGlyphs(killMe);
 		param.size = 48;
 		gamer_big = generator.generateFont(param);
 	}

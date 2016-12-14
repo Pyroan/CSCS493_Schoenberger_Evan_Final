@@ -5,6 +5,7 @@ import java.util.Scanner;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
+import com.badlogic.gdx.utils.Array;
 
 /**
  * Following actual OOP Principles and
@@ -19,7 +20,8 @@ public class ScoreTextReader
 
 	private FileHandle fileHandle;
 	private String rawScores;
-	public String[] scores;
+//	public String[] scores;
+	public Array<Entry> scores;
 	private Scanner scoreReader;
 
 	/**
@@ -29,6 +31,7 @@ public class ScoreTextReader
 	 */
 	public ScoreTextReader(FileHandle filepath)
 	{
+		scores = new Array<Entry>();
 		fileHandle = filepath;
 		// Read the whole thing into rawScores.
 		rawScores = fileHandle.readString();
@@ -36,6 +39,7 @@ public class ScoreTextReader
 		scoreReader = new Scanner(rawScores);
 		processRawScores();
 		scoreReader.close();
+		scores.sort();
 	}
 
 	/**
@@ -59,19 +63,30 @@ public class ScoreTextReader
 			if (s.charAt(0) != '#')
 			{
 				// If it's a valid entry add it to the list
-				if (s.matches("(.+ )+\\d+"))
+				if (s.matches("(.+ )+_\\d+"))
 					scoreList.add(s);
 				else
 					Gdx.app.debug(TAG, "Invalid Entry: " + s);
 			}
 		}
-		scoreList.toArray(scores);
+		String[] arrayScores = new String[scoreList.size()];
+		scoreList.toArray(arrayScores);
 		// So we end up with an array of strings that look like
 		// "<name> <number>".
+		
+		// Now, we turn each of those into an Entry and add
+		// that entry to scores
+		for (int i = 0; i < arrayScores.length; i++)
+		{
+			String[] score = arrayScores[i].split("_");
+			Entry entry = new Entry(score[0], Integer.parseInt(score[1]));
+			scores.add(entry);
+		}
 	}
 	
-	public String[] getScores()
+	public Array<Entry> getScores()
 	{
 		return scores;
 	}
+	
 }

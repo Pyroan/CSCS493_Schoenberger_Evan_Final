@@ -13,12 +13,20 @@ import com.vgdc.scoreboard.Scoreboard;
 public class ScoreScreen extends AbstractGameScreen {
 
 	private Scoreboard scoreBoard;
+	private float playerScore = -1;
 	/**
 	 * Constructor. Initializes an ArrayList.
 	 */
 	public ScoreScreen(Game game)
 	{
 		super(game);
+	}
+	
+	public ScoreScreen(Game game, float playerScore)
+	{
+		this(game);
+		this.playerScore = playerScore;
+		
 	}
 
 	@Override
@@ -35,7 +43,10 @@ public class ScoreScreen extends AbstractGameScreen {
 
 	@Override
 	public void show(){
-		scoreBoard = new Scoreboard(game);
+		if (playerScore < 0)
+			scoreBoard = new Scoreboard(game);
+		else 
+			scoreBoard = new Scoreboard(game, playerScore);
 	}
 
 	@Override
