@@ -1,6 +1,5 @@
 package com.vgdc.spooky;
 
-import java.util.ArrayList;
 import java.util.LinkedList;
 
 import com.badlogic.gdx.Game;
@@ -74,6 +73,7 @@ public class WorldController {
 		levels.add(Constants.LEVEL_01);
 		levels.add(Constants.LEVEL_02);
 		init();
+		uiController = new UIController();
 	}
 
 	private void init() {
@@ -81,7 +81,6 @@ public class WorldController {
 		cameraHelper = new CameraHelper();
 		controller = new PlayerControls();
 		musicPlayer = new MusicPlayer();
-		uiController = new UIController();
 		physicsHandler = new PhysicsHandler();
 		snow.load(Gdx.files.internal("particles/Snow"), Gdx.files.internal("particles"));
 		collectedCandies = 0;
@@ -238,10 +237,10 @@ public class WorldController {
 	private void nextLevel()
 	{
 //		die inside?
-		String time = uiController.getTimer().getTime();
+		int time = (int)uiController.getTimer().getRawTime();
 		if (levels.peek() == null)
 		{
-			game.setScreen(new ScoreScreen(game));
+			game.setScreen(new ScoreScreen(game, time));
 		}
 		else 
 		{
