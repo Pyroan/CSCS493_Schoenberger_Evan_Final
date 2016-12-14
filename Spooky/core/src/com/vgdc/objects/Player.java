@@ -24,12 +24,14 @@ public class Player extends AbstractGameObject
 	public TextureRegion left;
 	public TextureRegion right;
 	
+	public int wallsTouching;
+	
 	public ParticleEffect cloud = new ParticleEffect();
 
 	Pixmap pixmap = new Pixmap(200, 200, Format.RGBA8888);
 	public Player()
 	{
-
+		wallsTouching = 0;
 //		pixmap.setColor(0f,0f,0f,1f);
 //		pixmap.fillCircle(pixmap.getWidth()/2, pixmap.getHeight()/2, 50);
 //		tex = new Texture(pixmap);

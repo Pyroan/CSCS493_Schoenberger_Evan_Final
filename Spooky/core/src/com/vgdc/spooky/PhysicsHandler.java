@@ -13,7 +13,7 @@ import com.vgdc.objects.Player;
  *
  */
 public class PhysicsHandler implements ContactListener {
-	
+
 	/**
 	 * Sets a candy to collected if the player touches it. 
 	 */
@@ -25,35 +25,43 @@ public class PhysicsHandler implements ContactListener {
 			{
 				Candy candy = (Candy)contact.getFixtureB().getBody().getUserData();
 				candy.makeCollected();
-//				worldController
 			}
 		}
-		if (contact.getFixtureB().getBody().getUserData() instanceof Player)
+		else if (contact.getFixtureA().getBody().getUserData().equals("Floor"))
 		{
-			if (contact.getFixtureA().getBody().getUserData() instanceof Candy)
+			if (contact.getFixtureB().getBody().getUserData() instanceof Player)
 			{
-				Candy candy = (Candy)contact.getFixtureB().getBody().getUserData();
-				candy.makeCollected();
+				Player player = (Player)contact.getFixtureB().getBody().getUserData();
+				player.wallsTouching++;
 			}
 		}
+
 	}
 
 	@Override
 	public void endContact(Contact contact) {
-		// TODO Auto-generated method stub
-		
+		if (contact.getFixtureB().getBody().getUserData() instanceof Player)
+		{
+			if (contact.getFixtureA().getBody().getUserData() == "Floor")
+			{
+				Player player = (Player)contact.getFixtureB().getBody().getUserData();
+				player.wallsTouching--;
+
+			}
+		}
+
 	}
 
 	@Override
 	public void preSolve(Contact contact, Manifold oldManifold) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void postSolve(Contact contact, ContactImpulse impulse) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 }

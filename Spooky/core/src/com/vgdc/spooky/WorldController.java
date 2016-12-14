@@ -10,6 +10,8 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
+import com.badlogic.gdx.physics.box2d.Contact;
+import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
@@ -18,6 +20,7 @@ import com.vgdc.objects.AbstractGameObject;
 import com.vgdc.objects.Candy;
 import com.vgdc.objects.Floor;
 import com.vgdc.objects.Meds;
+import com.vgdc.objects.Player;
 import com.vgdc.screens.MenuScreen;
 import com.vgdc.screens.ScoreScreen;
 import com.vgdc.ui.UIController;
@@ -59,6 +62,8 @@ public class WorldController {
 	public ParticleEffect snow = new ParticleEffect();
 
 	private static final String TAG = WorldController.class.getName();
+
+	private boolean debugging = true;
 
 	LinkedList<String> levels = new LinkedList<String>();
 
@@ -126,6 +131,7 @@ public class WorldController {
 			fixtureDef.shape = polygonShape;
 			fixtureDef.friction = .9f;
 			body.createFixture(fixtureDef);
+			body.setUserData("Floor");
 			polygonShape.dispose();
 		}
 		// Player
@@ -173,6 +179,7 @@ public class WorldController {
 		FixtureDef fixtureDef = new FixtureDef();
 		fixtureDef.shape = polygonShape;
 		fixtureDef.friction = 0;
+		fixtureDef.isSensor = true;
 		body.createFixture(fixtureDef);
 		body.setUserData(object);
 		polygonShape.dispose();
@@ -228,7 +235,7 @@ public class WorldController {
 		if (Constants.LSD_MODE)
 			handleLSDmode(deltaTime);
 	}
-	
+
 	/**
 	 * Advances the game to the next level.
 	 * If we're on the last level, takes us to the
@@ -236,7 +243,7 @@ public class WorldController {
 	 */
 	private void nextLevel()
 	{
-//		die inside?
+		//		die inside?
 		int time = (int)uiController.getTimer().getRawTime();
 		if (levels.peek() == null)
 		{
@@ -260,16 +267,26 @@ public class WorldController {
 		if (Constants.LSD_MODE)
 		{
 			timer.update(deltaTime);
-			if (timer.getRawTime() > drugTime)
+
+			// Can't end if player is in wall.
+			if (level.player.wallsTouching == 0)
 			{
-				// Disable LSD mode
-				Constants.LSD_MODE = false;
-				// re-enable wall collision
-				for (Floor floor: level.tiles)
+				// If it's time for the effect to end...
+				if (timer.getRawTime() > drugTime)
 				{
-					floor.body.setActive(true);
+					// re-enable wall collision
+					for (Floor floor: level.tiles)
+					{
+						for(Fixture fixture: floor.body.getFixtureList())
+						{
+							fixture.setSensor(false);
+						}
+					}
+					// Disable LSD mode
+					Constants.LSD_MODE = false;
+
+					cameraHelper.zoomGoal = 1.0f;
 				}
-				cameraHelper.zoomGoal = 1.0f;
 			}
 		} else
 			// When drug mode first starts.
@@ -281,7 +298,12 @@ public class WorldController {
 			for (Floor floor: level.tiles)
 			{
 				if (!floor.isBorder)
-					floor.body.setActive(false);
+				{
+					for(Fixture fixture: floor.body.getFixtureList())
+					{
+						fixture.setSensor(true);
+					}
+				}
 			}
 		}
 	}
@@ -306,21 +328,24 @@ public class WorldController {
 	 */
 	public void handleDebugInput(float deltaTime)
 	{
-		if (Gdx.input.isKeyJustPressed(Keys.BACKSPACE))
-			if (!cameraHelper.hasTarget())
-				cameraHelper.setTarget(level.player);
-			else
-				cameraHelper.setTarget(null);
-		// Switch to the High Score screen.
-		if (Gdx.input.isKeyJustPressed(Keys.Y))
-			game.setScreen(new ScoreScreen(game));
 		if (Gdx.input.isKeyJustPressed(Keys.ESCAPE))
 			game.setScreen(new MenuScreen(game));
-		if (Gdx.input.isKeyJustPressed(Keys.L))
-			handleLSDmode(deltaTime);
-		if (Gdx.input.isKeyJustPressed(Keys.K))
-			nextLevel();
-		// Test a mock encounter.
+		if (debugging)
+		{
+			if (Gdx.input.isKeyJustPressed(Keys.BACKSPACE))
+				if (!cameraHelper.hasTarget())
+					cameraHelper.setTarget(level.player);
+				else
+					cameraHelper.setTarget(null);
+			// Switch to the High Score screen.
+			if (Gdx.input.isKeyJustPressed(Keys.Y))
+				game.setScreen(new ScoreScreen(game));
+			if (Gdx.input.isKeyJustPressed(Keys.L))
+				handleLSDmode(deltaTime);
+			if (Gdx.input.isKeyJustPressed(Keys.K))
+				nextLevel();
+			// Test a mock encounter.
+		}
 	}
 
 	/**
