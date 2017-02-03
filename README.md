@@ -1,2 +1,2 @@
-# Go Good Ghost Guy, 
-my final project for CS493
+# Go Good Ghost Guy
+My final project for CS493
