@@ -1,2 +1,2 @@
-# CSCS493_Schoenberger_Evan_Final
-Final Project for CS493
+# Go Good Ghost Guy, 
+my final project for CS493
